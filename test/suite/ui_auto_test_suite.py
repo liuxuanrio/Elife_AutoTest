@@ -1,6 +1,11 @@
 import traceback
-
 from test.common.web_Driver_run import WebDriverRun
+import os,sys
+curPath = os.path.abspath(os.path.dirname(__file__))
+rootPath = os.path.split(curPath)[0]
+PathProject = os.path.split(rootPath)[0]
+sys.path.append(rootPath)
+sys.path.append(PathProject)
 
 class AutoFile(WebDriverRun):
     def openFile(self, filename):
@@ -82,4 +87,4 @@ class OpenFile():
 if __name__ == "__main__":
     case = OpenFile().testFileCase()
     for i in case:
-        AutoFile().openFile(i)
+        print(AutoFile().openFile(i))
