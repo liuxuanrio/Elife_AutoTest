@@ -78,6 +78,14 @@ class WebDriverRun:
 
     # 打开浏览器
     def webBrowserPage(self, name, url):
+        option = webdriver.ChromeOptions()
+        # 无头模式
+        option.add_argument('headless')
+        # 沙盒模式运行
+        option.add_argument('no-sandbox')
+        # 大量渲染时候写入/tmp而非/dev/shm
+        option.add_argument('disable-dev-shm-usage')
+
         # 判断当前打开的浏览器是否保存在chrstrlist
         if name not in self.chrstrlist:
             self.chrstrlist.append(name)
@@ -85,7 +93,7 @@ class WebDriverRun:
             self.chrlist.append(self.chrindex)
         else:
             self.chrIndex(name)
-        self.chrlist[self.chrindex] = webdriver.Chrome()
+        self.chrlist[self.chrindex] = webdriver.Chrome(options=option)
         self.chrlist[self.chrindex].get(url[1:-1])
 
     # 点击元素
