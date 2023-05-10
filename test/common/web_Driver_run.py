@@ -1,4 +1,6 @@
 import os,sys
+import traceback
+
 curPath = os.path.abspath(os.path.dirname(__file__))
 rootPath = os.path.split(curPath)[0]
 PathProject = os.path.split(rootPath)[0]
@@ -63,21 +65,26 @@ class WebDriverRun:
 
         # 重试次数
         for i in range(3):
-            if self.iselement(xpath):
-                if type == 1:
-                    self.webPageElementClick(xpath)
-                elif type == 2:
-                    self.webPageElementInput(xpath, value)
-                elif type == 3:
-                    self.webElementValue(xpath, valuename)
+            try:
+                if self.iselement(xpath):
+                    if type == 1:
+                        self.webPageElementClick(xpath)
+                    elif type == 2:
+                        self.webPageElementInput(xpath, value)
+                    elif type == 3:
+                        self.webElementValue(xpath, valuename)
+                    else:
+                        print(f"类型不正确:{type}")
+                    break
                 else:
-                    print(f"类型不正确:{type}")
-                break
-            else:
-                if i == 2:
-                    self.runlog += f"\n 没有定位到元素位置：{xpath}  -----------------------------------------------"
+                    if i == 2:
+                        self.runlog += f"\n 没有定位到元素位置：{xpath}  -----------------------------------------------"
+                    time.sleep(3)
+                    pass
+            except:
+                errorlog = traceback.print_exc()
+                self.runlog += f"\n 执行报错：{xpath}  -----------------------------------------------"
                 time.sleep(3)
-                pass
 
     # 获取当前打开chrome
     def chrIndex(self, name):

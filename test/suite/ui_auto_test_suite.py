@@ -24,31 +24,25 @@ class AutoFile(WebDriverRun):
         valuestr = ""
         key = ""
         for i in range(len(lists)):
-            try:
-                data = lists[i].strip()
-                # 如果获取的字符在定义的方法内则执行保存为key，后面的字符保存为value
-                if data in self.operlist or i == len(lists) -1:
-                    if valuestr:  # 判断value是否不为空
-                        # 调用执行方法
-                        self.transfer(key, valuestr)
-                        self.runlog += f"\n {key}:{valuestr}"
-                    # 执行方法运行后，value设置为空
-                    valuestr = ""
-                    # 保存符合条件的字符为key
-                    key = data
-                else:  # 处理字符串
-                    if data not in "(" and data not in ")":
-                        valuestr += f"{data},"
+            data = lists[i].strip()
+            # 如果获取的字符在定义的方法内则执行保存为key，后面的字符保存为value
+            if data in self.operlist or i == len(lists) -1:
+                if valuestr:  # 判断value是否不为空
+                    # 调用执行方法
+                    self.transfer(key, valuestr)
+                    self.runlog += f"\n {key}:{valuestr}"
+                # 执行方法运行后，value设置为空
+                valuestr = ""
+                # 保存符合条件的字符为key
+                key = data
+            else:  # 处理字符串
+                if data not in "(" and data not in ")":
+                    valuestr += f"{data},"
+                else:
+                    if data in ")" and valuestr[-1] == ",":
+                        valuestr = valuestr[:-1] + data
                     else:
-                        if data in ")" and valuestr[-1] == ",":
-                            valuestr = valuestr[:-1] + data
-                        else:
-                            valuestr += data
-            except:
-                errorlog = traceback.print_exc()
-                self.runlog += f"\n {errorlog}"
-            # 保存运行日志
-
+                        valuestr += data
         # 关闭文件
         file.close()
 
@@ -61,7 +55,6 @@ class AutoFile(WebDriverRun):
 
         # 关闭开启的浏览器
         self.webquit()
-        print(self.runlog)
         return self.runlog
 
     # 处理后的值调用对应的方法
@@ -70,7 +63,11 @@ class AutoFile(WebDriverRun):
             value = value[1: -1]
             value = value.split(",")
             print(key, value)
-            self.main(key, value)
+            try:
+                self.main(key, value)
+            except:
+                errorlog = traceback.print_exc()
+                self.runlog += f"\n 执行失败：{errorlog}-------------------------------------"
         else:
             print("参数为空:", key, value)
 
