@@ -23,7 +23,7 @@ if __name__ == '__main__':
     script_path = os.path.abspath(__file__)[:-8]
     case = OpenFile().testFileCase(script_path)
     for i in case:
-        print(f"{script_path}/{i}")
-        print(AutoFile().openFile(f"{script_path}/{i}"))
+        print(f"{script_path}/data/{i}")
+        print(AutoFile().openFile(f"{script_path}/data/{i}"))
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
