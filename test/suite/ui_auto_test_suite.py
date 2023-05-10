@@ -1,4 +1,7 @@
 import os,sys
+
+from utils.config import FileDate
+
 curPath = os.path.abspath(os.path.dirname(__file__))
 rootPath = os.path.split(curPath)[0]
 PathProject = os.path.split(rootPath)[0]
@@ -10,13 +13,18 @@ from test.common.web_Driver_run import WebDriverRun
 
 
 class AutoFile(WebDriverRun):
-    def openFile(self, filename):
+    def openFile(self, filename, caseutc):
         # 定义脚本使用的方法
         self.operlist = ["args", "assign", "pause", "webBrowserPage", "webPageElementInput",
                          "webPageElementClick", "sleep", "if", "else"]
 
+        # 获取工作目录
+        script_path = FileDate().osFilePath()
+
+        picturePath = f"{script_path}/data/test_picture/{filename}"
+
         # 打开脚本文件
-        file = open(f'{filename}', 'r', encoding='utf8')
+        file = open(f'{script_path}/test/case/{filename}', 'r', encoding='utf8')
 
         # 读取文件为list
         lists = file.readlines()[2:-1]
@@ -53,9 +61,11 @@ class AutoFile(WebDriverRun):
                   f"\n 保存的判断结果：{str(self.ifstat)}" \
                   f"\n 保存的判断变量：{str(self.value)}"
 
+        assertint = self.ifstat
+
         # 关闭开启的浏览器
-        self.webquit()
-        return self.runlog
+        self.webquit(picturePath, caseutc)
+        return self.runlog, assertint
 
     # 处理后的值调用对应的方法
     def transfer(self, key, value):
@@ -72,11 +82,11 @@ class AutoFile(WebDriverRun):
             print("参数为空:", key, value)
 
 class OpenFile():
-    def testFileCase(self, path):
+    def testFileCase(self):
         import os
-
         # path定义要获取的文件名称的目录
-        paths = f"{path}/data"
+        script_path = FileDate().osFilePath()
+        paths = f"{script_path}/test/case"
 
         # os.listdir()方法获取文件夹名字，返回数组
         file_name_list = os.listdir(paths)
@@ -85,6 +95,6 @@ class OpenFile():
 
 if __name__ == "__main__":
     pass
-    # case = OpenFile().testFileCase()
+    case = OpenFile().testFileCase()
     # for i in case:
     #     print(AutoFile().openFile(i))

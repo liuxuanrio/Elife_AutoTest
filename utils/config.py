@@ -66,8 +66,58 @@ class TimeMethod:
         strnow = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
         return strnow
 
+    # 获取当前年月日
+    def newTimeDay(self):
+        import datetime
+        strnow = datetime.datetime.now().strftime("%Y-%m-%d")
+        return strnow
+
+    # 获取当前日期年月日时分秒
+    def newTimeDates(self):
+        import datetime
+        strnow = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        return strnow
+
     # 获取年月日时分秒，去除字符保留数字
     def intNowTimeDate(self):
         import datetime
         strnow = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
         return strnow
+
+    # 获取当前时间搓
+    def intNewTimeUtc(self):
+        import datetime
+        strnow = str(int(datetime.datetime.now().timestamp()))
+        return strnow
+
+
+
+# 获取文件信息
+class FileDate:
+
+    # 获取文件路径
+    def osFilePath(self):
+        # 获取工作目录
+        import os
+        script_path = os.path.abspath(__file__)[:-16]
+        return script_path
+
+    # 获取目录中符合条件的文件返回路径加文件名
+    def osFilePathList(self, fileName):
+        import os
+        script_path = self.osFilePath()
+        paths = f"{script_path}/data/test_picture"
+
+        # os.listdir()方法获取文件夹名字，返回数组
+        file_name_list = os.listdir(paths)
+        pathlist = []
+        for name in file_name_list:
+            if fileName in name:
+                pathlist.append(f"{paths}/{name}")
+        return pathlist
+
+
+
+if __name__ == "__main__":
+    # FileDate().osFilePathList("test.mqt")
+    data = TimeMethod().intNewTimeUtc()

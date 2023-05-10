@@ -141,9 +141,12 @@ class WebDriverRun:
         self.chrlist[self.chrindex].find_element(By.XPATH, xpath).send_keys(values)
 
     # 关闭浏览器
-    def webquit(self):
+    def webquit(self, path, caseutc):
         # 结束运行时关闭所有开启的浏览器
         for i in range(len(self.chrstrlist)):
+            time = TimeMethod().newTimeDates()
+            pngName = path + "_" +caseutc + "_" + time + f"_{self.chrstrlist[i]}.png"
+            self.chrlist[i].save_screenshot(pngName)
             self.chrlist[i].quit()
         # 重置全局变量
         self.chrstrlist = []
@@ -183,7 +186,8 @@ class WebDriverRun:
         # 处理参数中变量
         for i in range(len(self.value)):
             if "@" in self.value[i]:
-                self.value[i] = self.globalVariable[self.value[i]]
+                if self.value[i] in self.globalVariable.keys():
+                    self.value[i] = self.globalVariable[self.value[i]]
 
         if self.value[0] == self.value[1]:  # 执行判断
             # 保存结果

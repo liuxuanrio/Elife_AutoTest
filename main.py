@@ -4,26 +4,44 @@ rootPath = os.path.split(curPath)[0]
 PathProject = os.path.split(rootPath)[0]
 sys.path.append(rootPath)
 sys.path.append(PathProject)
-# This is a sample Python script.
+
+import pytest
+import allure
+from utils.config import FileDate, TimeMethod
 from test.suite.ui_auto_test_suite import OpenFile, AutoFile
 
 
-# Press ⌃R to execute it or replace it with your code.
-# Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
+class Test_merchants_go:
+    @pytest.mark.parametrize('casename', OpenFile().testFileCase())  # 获取test/case中的用例文件
+    @allure.story("elife_ui_test")
+    @allure.title("driver_app")
+    @allure.testcase("")
+    def test_merchant_action(self, casename):
+        # 用例名称
+        allure.dynamic.testcase(casename)
+
+        # 获取当前时间搓
+        caseutc = TimeMethod().intNewTimeUtc()
+
+        # 执行用例
+        msg = AutoFile().openFile(casename, caseutc)
+        print(msg)
+
+        # 保存执行日志
+        with allure.step("执行日志"):
+            allure.attach(msg[0])
+
+        with allure.step("截图"):
+            # 获取当前用例生成的截图
+            attachList = FileDate().osFilePathList(casename + caseutc)
+            for filename in attachList:
+                allure.attach.file(filename, attachment_type=allure.attachment_type.PNG)
+
+        # 断言
+        assert msg[1] == 0
 
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press ⌘F8 to toggle the breakpoint.
-
-
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
-    script_path = os.path.abspath(__file__)[:-8]
-    case = OpenFile().testFileCase(script_path)
-    for i in case:
-        print(f"{script_path}/data/{i}")
-        print(AutoFile().openFile(f"{script_path}/data/{i}"))
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+if __name__ == "__main__":
+    # pytest.main(['test_merchants_all.py', '-s','-m=smoke'])#挑选带有smoke的进行运行
+    pytest.main(['test_merchants_go.py', '-s', '--alluredir', '/data/report/tmp'])
+    os.system('allure generate  /data/report/tmp -o /data/report/report --clean')

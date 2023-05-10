@@ -54,6 +54,16 @@ sequence
   (
     @chr
     "xpath"
+    "//*[@id=\"fcm-notify-denied-msg\"]//*[@id=\"close-btn\"]"
+    100
+    3
+    0
+    1
+  )
+  webPageElementClick
+  (
+    @chr
+    "xpath"
     "//*[@id=\"container-fluid\"]//*[@id=\"announcement_modal\"]//*[@id=\"close-btn\"]"
     100
     3
