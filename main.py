@@ -20,8 +20,10 @@ def print_hi(name):
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     print_hi('PyCharm')
-    case = OpenFile().testFileCase()
+    script_path = os.path.abspath(__file__)
+    case = OpenFile().testFileCase(script_path)
     for i in case:
-        print(AutoFile().openFile(i))
+        print(f"{script_path}/{i}")
+        print(AutoFile().openFile(f"{script_path}/{i}"))
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/

@@ -16,7 +16,7 @@ class AutoFile(WebDriverRun):
                          "webPageElementClick", "sleep", "if", "else"]
 
         # 打开脚本文件
-        file = open(f'/data/{filename}', 'r', encoding='utf8')
+        file = open(f'{filename}', 'r', encoding='utf8')
 
         # 读取文件为list
         lists = file.readlines()[2:-1]
@@ -75,18 +75,19 @@ class AutoFile(WebDriverRun):
             print("参数为空:", key, value)
 
 class OpenFile():
-    def testFileCase(self):
+    def testFileCase(self, path):
         import os
 
         # path定义要获取的文件名称的目录
-        path = "/data"
+        paths = f"{path}/data"
 
         # os.listdir()方法获取文件夹名字，返回数组
-        file_name_list = os.listdir(path)
+        file_name_list = os.listdir(paths)
         return file_name_list
 
 
 if __name__ == "__main__":
-    case = OpenFile().testFileCase()
-    for i in case:
-        print(AutoFile().openFile(i))
+    pass
+    # case = OpenFile().testFileCase()
+    # for i in case:
+    #     print(AutoFile().openFile(i))
