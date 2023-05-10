@@ -16,7 +16,7 @@ class AutoFile(WebDriverRun):
                          "webPageElementClick", "sleep", "if", "else"]
 
         # 打开脚本文件
-        file = open(f'../../data/{filename}', 'r', encoding='utf8')
+        file = open(f'/data/{filename}', 'r', encoding='utf8')
 
         # 读取文件为list
         lists = file.readlines()[2:-1]
@@ -79,7 +79,7 @@ class OpenFile():
         import os
 
         # path定义要获取的文件名称的目录
-        path = "../../data"
+        path = "/data"
 
         # os.listdir()方法获取文件夹名字，返回数组
         file_name_list = os.listdir(path)
