@@ -119,5 +119,5 @@ class FileDate:
 
 
 if __name__ == "__main__":
-    # FileDate().osFilePathList("test.mqt")
-    data = TimeMethod().intNewTimeUtc()
+    FileDate().osFilePathList("test.mqt_1683712400")
+    # data = TimeMethod().intNewTimeUtc()

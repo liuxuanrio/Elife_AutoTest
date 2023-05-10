@@ -33,8 +33,9 @@ class Test_merchants_go:
 
         with allure.step("截图"):
             # 获取当前用例生成的截图
-            attachList = FileDate().osFilePathList(casename + caseutc)
+            attachList = FileDate().osFilePathList(casename + "_" + caseutc)
             for filename in attachList:
+                print(filename)
                 allure.attach.file(filename, attachment_type=allure.attachment_type.PNG)
 
         # 断言
