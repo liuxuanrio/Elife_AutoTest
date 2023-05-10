@@ -20,7 +20,7 @@ def print_hi(name):
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     print_hi('PyCharm')
-    script_path = os.path.abspath(__file__)
+    script_path = os.path.abspath(__file__)[:-8]
     case = OpenFile().testFileCase(script_path)
     for i in case:
         print(f"{script_path}/{i}")
