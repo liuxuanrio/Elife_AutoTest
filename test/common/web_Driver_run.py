@@ -1,3 +1,10 @@
+import os,sys
+curPath = os.path.abspath(os.path.dirname(__file__))
+rootPath = os.path.split(curPath)[0]
+PathProject = os.path.split(rootPath)[0]
+sys.path.append(rootPath)
+sys.path.append(PathProject)
+
 from selenium.common import exceptions
 from selenium import webdriver
 import time
@@ -5,12 +12,7 @@ from selenium.webdriver.common.by import By
 
 from test.common.gamilCode import selectGmail
 from utils.config import TimeMethod
-import os,sys
-curPath = os.path.abspath(os.path.dirname(__file__))
-rootPath = os.path.split(curPath)[0]
-PathProject = os.path.split(rootPath)[0]
-sys.path.append(rootPath)
-sys.path.append(PathProject)
+
 
 class WebDriverRun:
     def __init__(self):
