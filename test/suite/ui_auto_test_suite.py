@@ -73,11 +73,12 @@ class AutoFile(WebDriverRun):
         self.logs(self.assertLog)
 
         assertint = self.assertLog
+        runlogData = self.runlog
 
         # 关闭开启的浏览器
         self.webquit(picturePath, caseutc)
 
-        return self.runlog, assertint
+        return runlogData, assertint
 
     # 处理list中嵌套方法
     def for_list(self, filelist):

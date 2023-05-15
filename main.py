@@ -11,14 +11,12 @@ from utils.config import FileDate, TimeMethod
 from test.suite.ui_auto_test_suite import OpenFile, AutoFile
 
 
+@allure.feature("Driver_App")
 class Test_merchants_go:
     @pytest.mark.parametrize('casename', OpenFile().testFileCase())  # 获取test/case中的用例文件
-    @allure.story("elife_ui_test")
-    @allure.title("driver_app")
-    @allure.testcase("")
     def test_merchant_action(self, casename):
         # 用例名称
-        allure.dynamic.testcase(casename)
+        allure.dynamic.title(casename)
 
         # 获取当前时间搓
         caseutc = TimeMethod().intNewTimeUtc()
