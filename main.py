@@ -39,10 +39,10 @@ class Test_merchants_go:
                 allure.attach.file(filename, attachment_type=allure.attachment_type.PNG)
 
         # 断言
-        assert msg[1] == 0
+        assert "FALSE" not in msg[1]
 
 
 if __name__ == "__main__":
     # pytest.main(['test_merchants_all.py', '-s','-m=smoke'])#挑选带有smoke的进行运行
-    pytest.main(['test_merchants_go.py', '-s', '--alluredir', '/data/report/tmp'])
-    os.system('allure generate  /data/report/tmp -o /data/report/report --clean')
+    pytest.main(['test_merchants_go.py', '-s', '--alluredir', './data/report/tmp'])
+    os.system('allure generate  ./data/report/tmp -o ./data/report/report --clean')

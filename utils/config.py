@@ -90,6 +90,24 @@ class TimeMethod:
         strnow = str(int(datetime.datetime.now().timestamp()))
         return strnow
 
+    # 数据库日期转字符串
+    def dayStrftime(self, time):
+        import datetime
+        if isinstance(time, datetime.datetime):
+            time = time.strftime('%Y-%m-%d %H:%M:%S')
+        return time
+
+
+# 数据处理
+class DataType:
+
+    # 去除字符串中的引号
+    def updateStrMake(self, data):
+        if data[0: 1] == "'" or data[0: 1] == '"':
+            data = eval(data)
+        return data
+
+
 
 
 # 获取文件信息
@@ -119,5 +137,8 @@ class FileDate:
 
 
 if __name__ == "__main__":
-    FileDate().osFilePathList("test.mqt_1683712400")
+    pass
+    print(DataType().updateStrMake('"//*[@id=\\"index_rides_mgmt\\"]//*[@id=\\"finished-top-title\\"]"'))
+    # FileDate().osFilePathList("test.mqt_1683712400")
+
     # data = TimeMethod().intNewTimeUtc()

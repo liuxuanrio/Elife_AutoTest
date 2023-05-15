@@ -13,7 +13,7 @@ import time
 from selenium.webdriver.common.by import By
 
 from test.common.gamilCode import selectGmail
-from utils.config import TimeMethod
+from utils.config import TimeMethod, MYSQL_starter_test
 
 
 class WebDriverRun:
@@ -30,11 +30,14 @@ class WebDriverRun:
         # 判断语句状态 0 通过  1 不通过
         self.ifstat = 0
 
-        # 保存判断语句的参数为list
-        self.value = []
-
         # 保存运行日志
         self.runlog = ""
+
+        # 断言结果
+        self.assertLog = ""
+
+        # 获取当前运行的环境  0 本地环境  1 服务器
+        self.system_test = 0
 
     def iselement(self, xpath):
         """
@@ -50,18 +53,19 @@ class WebDriverRun:
             return False
 
     # seleium 点击，输入，获取文本操作方法需要运行的步骤(获取当前运行的浏览器，校验xpath是否存在)
-    def webPageif(self, name, xpath, type, value, valuename):
+    def webPageif(self, value, type):
         """
-        :param name: 执行的web name
-        :param xpath:
         :param type: 1 Click  2 Input  3 Value
         :return:
         """
-        # 获取当前运行的流量
-        self.chrIndex(name)
+        # 获取当前运行的浏览器
+        if type == 3:
+            self.chrIndex(value[2][0])
+        else:
+            self.chrIndex(value[0])
 
-        # 处理xpath中\\符号
-        xpath = xpath[1:-1].replace("\\", "")
+        # 获取xpath路径
+        xpath = value[2]
 
         # 重试次数
         for i in range(3):
@@ -72,33 +76,27 @@ class WebDriverRun:
                     elif type == 2:
                         self.webPageElementInput(xpath, value)
                     elif type == 3:
-                        self.webElementValue(xpath, valuename)
+                        self.webElementValue(value)
                     else:
                         print(f"类型不正确:{type}")
                     break
                 else:
                     if i == 2:
-                        self.runlog += f"\n 没有定位到元素位置：{xpath}  -----------------------------------------------"
-                    time.sleep(3)
+                        self.logs(f"没有定位到元素位置：{xpath}  -----------------------------------------------")
+                    time.sleep(1)
                     pass
             except:
                 errorlog = traceback.print_exc()
-                self.runlog += f"\n 执行报错：{xpath}  -----------------------------------------------"
-                time.sleep(3)
+                self.logs(f"执行报错：{xpath}{errorlog}  -----------------------------------------------")
+                time.sleep(1)
 
     # 获取当前打开chrome
     def chrIndex(self, name):
         self.chrindex = self.chrstrlist.index(name)
 
-    # 打开浏览器
-    def webBrowserPage(self, name, url):
-        option = webdriver.ChromeOptions()
-        # 无头模式
-        option.add_argument('headless')
-        # 沙盒模式运行
-        option.add_argument('no-sandbox')
-        # 大量渲染时候写入/tmp而非/dev/shm
-        option.add_argument('disable-dev-shm-usage')
+    # 启动google浏览器
+    def webBrowser(self, value):
+        name = value[0]
 
         # 判断当前打开的浏览器是否保存在chrstrlist
         if name not in self.chrstrlist:
@@ -107,8 +105,30 @@ class WebDriverRun:
             self.chrlist.append(self.chrindex)
         else:
             self.chrIndex(name)
-        self.chrlist[self.chrindex] = webdriver.Chrome(options=option)
-        self.chrlist[self.chrindex].get(url[1:-1])
+        # 打开浏览器
+        if self.system_test == 1:
+            option = webdriver.ChromeOptions()
+            # 无头模式
+            option.add_argument('headless')
+            # 沙盒模式运行
+            option.add_argument('no-sandbox')
+            # 大量渲染时候写入/tmp而非/dev/shm
+            option.add_argument('disable-dev-shm-usage')
+            self.chrlist[self.chrindex] = webdriver.Chrome(options=option)
+        else:
+            self.chrlist[self.chrindex] = webdriver.Chrome()
+        # 窗口最大化
+        self.chrlist[self.chrindex].maximize_window()
+
+    # 打开url
+    def webBrowserPage(self, value):
+        if value[1] == "str":
+            url = self.strValue(value[2])
+        else:
+            url = self.strValue(value[1])
+        # 打开链接
+        self.chrlist[self.chrindex].get(url)
+        time.sleep(5)
 
     # 点击元素
     def webPageElementClick(self, xpath):
@@ -117,24 +137,11 @@ class WebDriverRun:
 
     # 输入信息
     def webPageElementInput(self, xpath, value):
-        # 判断输入内容是否有拼接
-        if value[5] == "str":
-            value = value[6:]
-            values = ""
-            for i in range(len(value)):
-                value1 = value[i].replace("(", "")
-                value2 = value1.replace(")", "")
-                if "@" in value2:
-                    # 替换变量值
-                    values += self.globalVariable[value2]
-                else:
-                    values += value2
+        if value[5] == "str":  # 判断参数中是否有拼接
+            values = self.strValue(value[6])
         else:
-            # 有变量符 且不是邮箱地址
-            if "@" in value[5] and "com" not in value[5]:
-                values = self.globalVariable[value[5]]
-            else:
-                values = value[5][1:-1]
+            values = self.strValue(value[5])
+
         time.sleep(2)
         # 清除输入框内容
         self.chrlist[self.chrindex].find_element(By.XPATH, xpath).clear()
@@ -153,77 +160,178 @@ class WebDriverRun:
         self.chrlist = []
         self.globalVariable = {}
         self.ifstat = 0
-        self.value = []
-
+        self.runlog = ""
+        self.assertLog = ""
+        self.system_test = 0
 
     # 获取元素值
-    def webElementValue(self, xpath, globalkey):
+    def webElementValue(self, value):
         # 把获取的值保存到全局参数self.globalVariable
-        self.globalVariable[globalkey] = self.chrlist[self.chrindex].find_element(By.XPATH, xpath).get_attribute('innerText')
+        self.chrIndex(value[2][0])
+        try:
+            self.globalVariable[value[0]] = self.chrlist[self.chrindex].find_element(By.XPATH, value[2][2]).\
+                get_attribute('innerText')
+        except:
+            try:
+                self.globalVariable[value[0]] = self.chrlist[self.chrindex].find_element(By.XPATH, value[2][2]).text
+            except:
+                try:
+                    self.globalVariable[value[0]] = self.chrlist[self.chrindex].find_element(By.XPATH, value[2][2]). \
+                        get_attribute('innerText')
+                except:
+                    self.logs(f"获取元素失败：{value}")
+                    self.globalVariable[value[0]] = ""
+
+    def DBmysql(self, value):
+        sqlvalue = value[2][1][1]
+        if sqlvalue == "str":
+            sqlvalue = self.strValue(value[2][1][2])
+        else:
+            sqlvalue = self.strValue(sqlvalue)
+        if "select" in sqlvalue:  # 查询sql
+            valuelist = MYSQL_starter_test().ExecQuery(sqlvalue)
+            retlist = []
+            for i in valuelist:  # 循环读取list，替换日期格式为str
+                retlist1 = []
+                for x in i:
+                    retlist1.append(TimeMethod().dayStrftime(x))
+                retlist.append(retlist1)
+            self.globalVariable[value[0]] = retlist
+        else:
+            self.globalVariable[value[0]] = MYSQL_starter_test().ExecNonQuery(sqlvalue)
 
     # 分派指令
     def assign(self, value):
         if value[1] == "dateTimeFormat":  # 获取当前时间
-            if "-" in value[3]:  # 有日期格式的
+            if "-" in value[2][1]:  # 有日期格式的
                 self.globalVariable[value[0]] = TimeMethod().newTimeDate()
             else:  # 转数字的
                 self.globalVariable[value[0]] = TimeMethod().intNowTimeDate()
         elif value[1] == "fileRun":  # 获取短信验证码
             self.globalVariable[value[0]] = selectGmail(1)
         elif value[1] == "webElementValue":  # 获取元素值
-            self.webPageif(value[2][1:], value[4], 3, "", value[0])
+            self.webElementValue(value)
+        elif value[1] == "webPageElements":
+            self.webPageif(value, 3)
+        elif value[1] == "webBrowser":  # 打开浏览器
+            self.webBrowser(value)
+        elif value[1] == "tableStream":  # 查询数据库
+            self.DBmysql(value)
+        elif value[1] == "selInPlace":  # 获取list中的值
+            if value[2][0] in self.globalVariable.keys():
+                self.globalVariable[value[0]] = self.globalVariable[value[2][0]][int(value[2][1])][int(value[2][2])]
+            else:
+                self.globalVariable[value[0]] = ""
+        elif value[1] == "strSub":  # 截断字符串
+            if value[2][0] == "str":
+                self.globalVariable[value[0]] = self.strValue(value[2][1])[int(value[2][-2]):int(value[2][-1])]
+            elif value[2][0] in self.globalVariable.keys():
+                self.globalVariable[value[0]] = self.globalVariable[value[2][0]][int(value[2][1]):int(value[2][2])]
+            else:
+                self.globalVariable[value[0]] = ""
         else:
-            print("未找到或者不执行", value)
+            self.logs(f"未找到运行方法或者不执行:{value}")
 
     # 判断方法处理
-    def ifelse(self, equal, values):
-        # 保存判断参数
-        valist = [values[1][1:], values[2][1:-7], values[5], values[6][3:-3]]
+    def ifelse(self, value):
+        if value[0] == "equal":  # 相等
+            if value[1][0] == "str":
+                ifvalue1 = self.strValue(value[1][1])
+            else:
+                ifvalue1 = self.strValue(value[1][0])
+            if value[1][1] == "str":
+                ifvalue2 = self.strValue(value[1][2])
+            else:
+                ifvalue2 = self.strValue(value[1][1])
 
-        # 去重
-        self.value = list(set(valist))
+            if ifvalue1 == ifvalue2:  # 判断通过
+                self.ifstat = 0
+                self.ifForRun(value[2:])
+            else:
+                self.ifstat = 1
 
-        # 处理参数中变量
-        for i in range(len(self.value)):
-            if "@" in self.value[i]:
-                if self.value[i] in self.globalVariable.keys():
-                    self.value[i] = self.globalVariable[self.value[i]]
-
-        if self.value[0] == self.value[1]:  # 执行判断
-            # 保存结果
-            self.runlog += f"\n{values[4][2:-1]} {self.value[0]} == {self.value[1]}-----------------------------------"
         else:
-            # 修改判断状态为1 不通过
-            self.ifstat = 1
+            self.logs(f"未找到判断方法：{value[0]}")
+
+    # 嵌套中的方法处理
+    def ifForRun(self, valueList):
+        key = ""
+        for value in valueList:
+            if type(value) == list:
+                self.main(key, value)
+            else:
+                key = value
+
+    # 全局参数处理
+    def args(self, kvlist):
+        for kv in kvlist:
+            if type(kv) == list:
+                self.globalVariable[kv[0]] = kv[1]
+        print(self.globalVariable)
+
+    # str中参数处理
+    def strValue(self, value):
+        if type(value) == list:  # 判断参数中是否有拼接
+            values = ""
+            for s in value:
+                if s[0: 1] == "@":
+                    if s in self.globalVariable.keys():
+                        values += self.globalVariable[s]
+                    else:
+                        # 获取参数不存在
+                        self.logs(f"获取参数失败：{str(value)}---{s}")
+                else:
+                    values += s
+        elif value[0:1] == "@":  # 判断是否为变量
+            if value in self.globalVariable.keys():  # 判断变量是否在全局变量中
+                values = self.globalVariable[value]
+            else:
+                values = value
+        else:
+            values = value
+        return values
+
+    def logs(self, logs):
+        newTime = TimeMethod().newTimeDates()
+        print(f"\n[{newTime}] {logs}")
+        self.runlog += f"\n[{newTime}] {logs}"
+
 
     # 脚本中调用的方法处理
     def main(self, key, value):
-        if key == "webBrowserPage":
-            # 打开浏览器
-            self.webBrowserPage(value[0], value[1])
-        elif key == "webPageElementClick":
-            # 点击事件
-            self.webPageif(value[0], value[2], 1, "", "")
-        elif key == "webPageElementInput":
-            # 输入事件
-            self.webPageif(value[0], value[2], 2, value, "")
-        elif key == "assign":
-            # 变量
+        if key == "webBrowserPage":  # 打开浏览器
+            self.webBrowserPage(value)
+        elif key == "webPageElementClick":  # 点击事件
+            self.webPageif(value, 1,)
+        elif key == "webPageElementInput":  # 输入事件
+            self.webPageif(value, 2)
+        elif key == "assign":  # 变量
             self.assign(value)
+        elif key == "args":  # 全局变量
+            self.args(value)
         elif key == "if":
-            self.ifelse(value[0], value)
+            self.ifelse(value)
         elif key == "elif":
-            pass
+            self.ifelse(value)
         elif key == "else":
             if self.ifstat == 1:
-                self.runlog += f"\n{str(value[2][2:-1])} {str(self.value[0])} != {str(self.value[1])} -------------" \
-                               f"--------------"
+                self.ifForRun(value)
+        elif key == "print":
+            if value[0] == "str":
+                value = self.strValue(value[1])
+                self.logs(f"print:{value}")
+                if "PASS" in value or "FALSE" in value:
+                    self.assertLog += f"\n{value}"
+            else:
+                self.logs(f"print:{str(value[0])}")
+
         elif key == "sleep":
-            time.sleep(int(value[0]))
-        elif key == "args":
-            pass
+            if int(value[0]) > 0:
+                time.sleep(int(value[0]))
+            else:
+                self.logs(f"等待时间超时：{value[0]}")
         else:
-            print("未找到方法:", key)
+            self.logs(f"未找到方法:{key} {value}")
 
 
 if __name__ == "__main__":
