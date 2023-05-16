@@ -407,8 +407,6 @@ class WebDriverRun:
                             sumtime -= 60
                         else:
                             time.sleep(sumtime)
-                            time.sleep(10)
-                            self.screenshot()
                             break
                 else:
                     time.sleep(int(value[0]))

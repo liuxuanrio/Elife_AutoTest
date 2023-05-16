@@ -526,6 +526,17 @@ sequence
   (
     @times
   )
+  webPageElementClick
+  ^ 刷新订单列表
+  (
+    @chr
+    "xpath"
+    "//*[@id=\"index_rides_mgmt\"]//*[@id=\"rides-reload-btn\"]"
+    100
+    3
+    0
+    1
+  )
   pause
   (
   )
