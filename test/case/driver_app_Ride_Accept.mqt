@@ -361,7 +361,7 @@ sequence
     streamDbSql
     (
       @db
-      "update ride.auction set start_utc = (select unix_timestamp((SELECT date_format(DATE_ADD(NOW(), INTERVAL '3' MINUTE), '%Y-%m-%d %H:%i') FROM DUAL))),start_time_str = (SELECT date_format(DATE_ADD(NOW(), INTERVAL '3' MINUTE), '%Y-%m-%d %H:%i') FROM DUAL) where id = '3812';"
+      "update ride.auction set start_utc = (select unix_timestamp((SELECT date_format(DATE_ADD(NOW(), INTERVAL '2' MINUTE), '%Y-%m-%d %H:%i') FROM DUAL))),start_time_str = (SELECT date_format(DATE_ADD(NOW(), INTERVAL '2' MINUTE), '%Y-%m-%d %H:%i') FROM DUAL) where id = '3812';"
     )
   )
   tableStream
@@ -369,7 +369,7 @@ sequence
     streamDbSql
     (
       @db
-      "update ride.auction set start_utc = (select unix_timestamp((SELECT date_format(DATE_ADD(NOW(), INTERVAL '5' MINUTE), '%Y-%m-%d %H:%i') FROM DUAL))),start_time_str = (SELECT date_format(DATE_ADD(NOW(), INTERVAL '5' MINUTE), '%Y-%m-%d %H:%i') FROM DUAL) where id = '3814';"
+      "update ride.auction set start_utc = (select unix_timestamp((SELECT date_format(DATE_ADD(NOW(), INTERVAL '4' MINUTE), '%Y-%m-%d %H:%i') FROM DUAL))),start_time_str = (SELECT date_format(DATE_ADD(NOW(), INTERVAL '4' MINUTE), '%Y-%m-%d %H:%i') FROM DUAL) where id = '3814';"
     )
   )
   webPageElementClick

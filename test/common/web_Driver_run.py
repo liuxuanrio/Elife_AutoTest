@@ -385,6 +385,15 @@ class WebDriverRun:
                 timeValue = self.strValue(value[0])
             self.logs(f"强制等待:{str(timeValue)}")
             if int(timeValue) > 0:
+                if int(timeValue) > 60:
+                    sumtime = int(timeValue)
+                    for i in range(5):
+                        if sumtime > 60:
+                            time.sleep(60)
+                            sumtime -= 60
+                        else:
+                            time.sleep(sumtime)
+                            break
                 time.sleep(int(value[0]))
             else:
                 self.logs(f"等待时间超时：{timeValue}")
