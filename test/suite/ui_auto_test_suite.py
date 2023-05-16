@@ -20,6 +20,9 @@ class AutoFile(WebDriverRun):
         script_path = FileDate().osFilePath()
 
         picturePath = f"{script_path}/data/test_picture/{filename}"
+        self.caseutc = caseutc
+        self.path = picturePath
+
         if "jenkins_home" in picturePath:
             self.system_test = 1
 

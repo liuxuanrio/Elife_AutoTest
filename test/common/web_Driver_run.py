@@ -39,6 +39,12 @@ class WebDriverRun:
         # 获取当前运行的环境  0 本地环境  1 服务器
         self.system_test = 0
 
+        # 保存utc
+        self.caseutc = ""
+
+        # 保存path
+        self.path = ""
+
     def iselement(self, xpath):
         """
         基本实现判断元素是否存在
@@ -163,6 +169,14 @@ class WebDriverRun:
         self.runlog = ""
         self.assertLog = ""
         self.system_test = 0
+        self.caseutc = ""
+        self.path = ""
+
+    def screenshot(self):
+        for i in range(len(self.chrstrlist)):
+            time = TimeMethod().newTimeDates()
+            pngName = self.path + "_" + self.caseutc + "_" + time + f"_{self.chrstrlist[i]}.png"
+            self.chrlist[i].save_screenshot(pngName)
 
     # 获取元素值
     def webElementValue(self, value):
@@ -393,6 +407,8 @@ class WebDriverRun:
                             sumtime -= 60
                         else:
                             time.sleep(sumtime)
+                            time.sleep(10)
+                            self.screenshot()
                             break
                 else:
                     time.sleep(int(value[0]))
