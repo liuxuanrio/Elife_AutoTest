@@ -394,7 +394,8 @@ class WebDriverRun:
                         else:
                             time.sleep(sumtime)
                             break
-                time.sleep(int(value[0]))
+                else:
+                    time.sleep(int(value[0]))
             else:
                 self.logs(f"等待时间超时：{timeValue}")
         else:
