@@ -522,6 +522,20 @@ sequence
       0
     )
   )
+  if
+  (
+    greaterEqual
+    (
+      @times
+      0
+    )
+    sleep
+    (
+      @times
+      0
+      0
+    )
+  )
   print
   (
     @times
