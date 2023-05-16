@@ -11,9 +11,15 @@ from utils.config import FileDate, TimeMethod
 from test.suite.ui_auto_test_suite import OpenFile, AutoFile
 
 
+# 获取执行脚本
+def file_case(fliename):
+    flieList = OpenFile().testFileCase(fliename)
+    global flieList
+
+
 @allure.feature("Driver_App")
 class Test_merchants_go:
-    @pytest.mark.parametrize('casename', OpenFile().testFileCase())  # 获取test/case中的用例文件
+    @pytest.mark.parametrize('casename', flieList)  # 获取test/case中的用例文件
     def test_merchant_action(self, casename):
         # 用例名称
         allure.dynamic.title(casename)
@@ -41,6 +47,8 @@ class Test_merchants_go:
 
 
 if __name__ == "__main__":
+    fliename = sys.argv[1]
+    file_case(fliename)
     # pytest.main(['test_merchants_all.py', '-s','-m=smoke'])#挑选带有smoke的进行运行
-    pytest.main(['test_merchants_go.py', '-s', '--alluredir', './data/report/tmp'])
+    pytest.main(['main.py', '-s', '--alluredir', './data/report/tmp'])
     os.system('allure generate  ./data/report/tmp -o ./data/report/report --clean')

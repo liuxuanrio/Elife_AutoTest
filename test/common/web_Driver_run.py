@@ -200,6 +200,15 @@ class WebDriverRun:
         else:
             self.globalVariable[value[0]] = MYSQL_starter_test().ExecNonQuery(sqlvalue)
 
+    # 执行sql
+    def tableStream(self, value):
+        if value[1][1] == "str":
+            sqlvalue = self.strValue(value[1][2])
+        else:
+            sqlvalue = value[1][1]
+        ret = MYSQL_starter_test().ExecNonQuery(sqlvalue)
+        self.logs(ret)
+
     # 分派指令
     def assign(self, value):
         if value[1] == "dateTimeFormat":  # 获取当前时间
@@ -229,29 +238,64 @@ class WebDriverRun:
                 self.globalVariable[value[0]] = self.globalVariable[value[2][0]][int(value[2][1]):int(value[2][2])]
             else:
                 self.globalVariable[value[0]] = ""
+
+        elif value[1] == "sel":  # 获取list中对应的值
+            if value[2][0] in self.globalVariable.keys():
+                if value[2][1] in self.globalVariable.keys():
+                    selindex = self.globalVariable[value[2][1]]
+                else:
+                    selindex = value[2][1]
+                self.globalVariable[value[0]] = self.globalVariable[value[2][0]][int(selindex)]
+            else:
+                self.globalVariable[value[0]] = ""
+
+        elif value[1] == "valueOf":
+            if len(value[2]) > 1:
+                self.globalVariable[value[0]] = self.strValue(value[2][1])
+            else:
+                self.logs(f"不执行:{value}")
+
+        elif value[1] == "split":
+            if value[2][0] in self.globalVariable.keys():
+                self.globalVariable[value[0]] = self.globalVariable[value[2][0]].split(value[2][1])
+            else:
+                self.logs(f"未找到参数:{value}")
         else:
             self.logs(f"未找到运行方法或者不执行:{value}")
 
     # 判断方法处理
     def ifelse(self, value):
+        # 处理参数
+        if value[1][0] == "str":
+            ifvalue1 = self.strValue(value[1][1])
+        else:
+            ifvalue1 = self.strValue(value[1][0])
+        if value[1][1] == "str":
+            ifvalue2 = self.strValue(value[1][2])
+        else:
+            ifvalue2 = self.strValue(value[1][1])
         if value[0] == "equal":  # 相等
-            if value[1][0] == "str":
-                ifvalue1 = self.strValue(value[1][1])
-            else:
-                ifvalue1 = self.strValue(value[1][0])
-            if value[1][1] == "str":
-                ifvalue2 = self.strValue(value[1][2])
-            else:
-                ifvalue2 = self.strValue(value[1][1])
-
             if ifvalue1 == ifvalue2:  # 判断通过
                 self.ifstat = 0
                 self.ifForRun(value[2:])
             else:
                 self.ifstat = 1
 
+        elif value[1][0] == "greaterEqual":  # 大于等于
+            if ifvalue1 >= ifvalue2:  # 判断通过
+                self.ifstat = 0
+                self.ifForRun(value[2:])
+            else:
+                self.ifstat = 1
         else:
             self.logs(f"未找到判断方法：{value[0]}")
+
+    # for循环
+    def loopStream(self, value):
+        for i in range(int(value[2][1])):
+            self.globalVariable[value[0]] = i
+            self.ifForRun(value[3:])
+
 
     # 嵌套中的方法处理
     def ifForRun(self, valueList):
@@ -309,6 +353,10 @@ class WebDriverRun:
             self.assign(value)
         elif key == "args":  # 全局变量
             self.args(value)
+        elif key == "loopStream":  # for 循环
+            self.loopStream(value)
+        elif key == "tableStream":  # 执行sql
+            self.tableStream(value)
         elif key == "if":
             self.ifelse(value)
         elif key == "elif":
@@ -324,12 +372,15 @@ class WebDriverRun:
                     self.assertLog += f"\n{value}"
             else:
                 self.logs(f"print:{str(value[0])}")
-
         elif key == "sleep":
-            if int(value[0]) > 0:
+            if value[1][0] == "str":
+                timeValue = self.strValue(value[1])
+            else:
+                timeValue = self.strValue(value[0])
+            if int(timeValue) > 0:
                 time.sleep(int(value[0]))
             else:
-                self.logs(f"等待时间超时：{value[0]}")
+                self.logs(f"等待时间超时：{timeValue}")
         else:
             self.logs(f"未找到方法:{key} {value}")
 

@@ -44,7 +44,7 @@ class AutoFile(WebDriverRun):
                         valuelist = self.for_list(valuelist[1:-1])
                     print(key, valuelist)
                     self.transfer(key, valuelist)
-                    self.logs(f"{key}:{valuelist}")
+                    # self.logs(f"{key}:{valuelist}")
                 # 执行方法运行后，value设置为空
                 valuelist = []
                 # 保存符合条件的字符为key
@@ -130,21 +130,25 @@ class AutoFile(WebDriverRun):
 
 
 class OpenFile():
-    def testFileCase(self):
-        import os
-        # path定义要获取的文件名称的目录
-        script_path = FileDate().osFilePath()
-        paths = f"{script_path}/test/case"
+    def testFileCase(self, fliename):
+        if fliename:
+            file_name_list = fliename.split(",")
+        else:
+            import os
+            # path定义要获取的文件名称的目录
+            script_path = FileDate().osFilePath()
+            paths = f"{script_path}/test/case"
 
-        # os.listdir()方法获取文件夹名字，返回数组
-        file_name_list = os.listdir(paths)
+            # os.listdir()方法获取文件夹名字，返回数组
+            file_name_list = os.listdir(paths)
+
         return file_name_list
 
 
 if __name__ == "__main__":
     pass
     caseutc = TimeMethod().intNewTimeUtc()
-    case = AutoFile().openFile("driver_app_employee_login1.mqt", caseutc)
+    case = AutoFile().openFile("driver_app_Ride_Accept.mqt", caseutc)
     print(case)
     # case = AutoFile().filetest("test.mqt")
     # for i in case:

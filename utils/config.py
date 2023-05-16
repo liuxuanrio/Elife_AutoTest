@@ -104,7 +104,10 @@ class DataType:
     # 去除字符串中的引号
     def updateStrMake(self, data):
         if data[0: 1] == "'" or data[0: 1] == '"':
-            data = eval(data)
+            try:
+                data = eval(data)
+            except:
+                pass
         return data
 
 
