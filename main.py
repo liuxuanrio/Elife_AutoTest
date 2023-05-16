@@ -10,12 +10,13 @@ import allure
 from utils.config import FileDate, TimeMethod
 from test.suite.ui_auto_test_suite import OpenFile, AutoFile
 
-def case_list(filename):
-    global filelist
-    filelist = OpenFile().testFileCase(filename)
+filename = sys.argv[1]
+global filelist
+filelist = OpenFile().testFileCase(filename)
 
 @allure.feature("Driver_App")
 class Test_merchants_go:
+
     @pytest.mark.parametrize('casename', filelist)  # 获取test/case中的用例文件
     def test_merchant_action(self, casename):
         # 用例名称
@@ -44,7 +45,7 @@ class Test_merchants_go:
 
 
 if __name__ == "__main__":
-    case_list(sys.argv[1])
+
     # pytest.main(['test_merchants_all.py', '-s','-m=smoke'])#挑选带有smoke的进行运行
     pytest.main(['main.py', '-s', '--alluredir', './data/report/tmp'])
     os.system('allure generate  ./data/report/tmp -o ./data/report/report --clean')
