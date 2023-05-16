@@ -14,6 +14,7 @@ from test.suite.ui_auto_test_suite import OpenFile, AutoFile
 # 获取执行脚本
 def file_case(fliename):
     flieList = OpenFile().testFileCase(fliename)
+    print(flieList)
     global flieList
 
 
