@@ -11,8 +11,8 @@ from utils.config import FileDate, TimeMethod
 from test.suite.ui_auto_test_suite import OpenFile, AutoFile
 
 def case_list(filename):
-    filelist = OpenFile().testFileCase(filename)
     global filelist
+    filelist = OpenFile().testFileCase(filename)
 
 @allure.feature("Driver_App")
 class Test_merchants_go:
