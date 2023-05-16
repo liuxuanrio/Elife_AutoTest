@@ -45,7 +45,6 @@ class Test_merchants_go:
 
 
 if __name__ == "__main__":
-
     # pytest.main(['test_merchants_all.py', '-s','-m=smoke'])#挑选带有smoke的进行运行
     pytest.main(['main.py', '-s', '--alluredir', './data/report/tmp'])
     os.system('allure generate  ./data/report/tmp -o ./data/report/report --clean')
