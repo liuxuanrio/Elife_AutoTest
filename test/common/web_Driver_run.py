@@ -383,6 +383,7 @@ class WebDriverRun:
                 timeValue = self.strValue(value[1])
             else:
                 timeValue = self.strValue(value[0])
+            self.logs(f"强制等待:{str(timeValue)}")
             if int(timeValue) > 0:
                 time.sleep(int(value[0]))
             else:
