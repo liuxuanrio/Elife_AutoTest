@@ -188,7 +188,7 @@ class WebDriverRun:
             sqlvalue = self.strValue(value[2][1][2])
         else:
             sqlvalue = self.strValue(sqlvalue)
-        if "select" in sqlvalue:  # 查询sql
+        if "select" in sqlvalue or "SELECT" in sqlvalue:  # 查询sql
             valuelist = MYSQL_starter_test().ExecQuery(sqlvalue)
             retlist = []
             for i in valuelist:  # 循环读取list，替换日期格式为str
