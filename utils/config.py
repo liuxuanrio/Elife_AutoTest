@@ -12,14 +12,17 @@ class MYSQL_starter_test:
     )
     # 传入sql语句查询所有值
     def ExecQuery(self, sql):
+        print(sql)
         cur=self.db.cursor()
         cur.execute(sql)
         resList = cur.fetchall()
         cur.close()
+        print(resList)
         return resList
 
     # 修改数据库信息
     def ExecNonQuery(self, sql):
+        print(sql)
         try:
             cur = self.db.cursor()
             cur.execute(sql)

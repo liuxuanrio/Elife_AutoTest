@@ -171,6 +171,7 @@ class WebDriverRun:
         try:
             self.globalVariable[value[0]] = self.chrlist[self.chrindex].find_element(By.XPATH, value[2][2]).\
                 get_attribute('innerText')
+            self.logs(f"获取元素成功：{value[0]}={self.globalVariable[value[0]]}")
         except:
             try:
                 self.globalVariable[value[0]] = self.chrlist[self.chrindex].find_element(By.XPATH, value[2][2]).text
