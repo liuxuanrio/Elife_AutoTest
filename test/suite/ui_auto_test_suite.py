@@ -42,7 +42,6 @@ class AutoFile(WebDriverRun):
                     if valuelist[0] == "(":
                         pass
                         valuelist = self.for_list(valuelist[1:-1])
-                    print(key, valuelist)
                     self.transfer(key, valuelist)
                     # self.logs(f"{key}:{valuelist}")
                 # 执行方法运行后，value设置为空
@@ -88,7 +87,7 @@ class AutoFile(WebDriverRun):
             key = ""
             return_list = []
             for i in range(len(filelist)):
-                data = filelist[i].strip()
+                data = filelist[i]
                 if (tuplesum == 0 and data != "(" and "^" not in data) or i == len(filelist) - 1:
                     if i == len(filelist) - 1:
                         valuelist.append(data)
@@ -115,7 +114,12 @@ class AutoFile(WebDriverRun):
                         if "^" in data:
                             pass
                         else:
-                            valuelist.append(DataType().updateStrMake(data))
+                            if data == "', '":
+                                pass
+                                valuelist.append(data)
+                            else:
+                                valuelist.append(DataType().updateStrMake(data))
+
             return return_list
         else:
             return filelist

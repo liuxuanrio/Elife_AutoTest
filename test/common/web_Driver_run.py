@@ -213,7 +213,10 @@ class WebDriverRun:
     def assign(self, value):
         if value[1] == "dateTimeFormat":  # 获取当前时间
             if "-" in value[2][1]:  # 有日期格式的
-                self.globalVariable[value[0]] = TimeMethod().newTimeDate()
+                if 'ss' in value[2][1]:
+                    self.globalVariable[value[0]] = TimeMethod().newTimeDates()
+                else:
+                    self.globalVariable[value[0]] = TimeMethod().newTimeDate()
             else:  # 转数字的
                 self.globalVariable[value[0]] = TimeMethod().intNowTimeDate()
         elif value[1] == "fileRun":  # 获取短信验证码
@@ -281,8 +284,8 @@ class WebDriverRun:
             else:
                 self.ifstat = 1
 
-        elif value[1][0] == "greaterEqual":  # 大于等于
-            if ifvalue1 >= ifvalue2:  # 判断通过
+        elif value[0] == "greaterEqual":  # 大于等于
+            if int(ifvalue1) >= int(ifvalue2):  # 判断通过
                 self.ifstat = 0
                 self.ifForRun(value[2:])
             else:
@@ -343,6 +346,8 @@ class WebDriverRun:
 
     # 脚本中调用的方法处理
     def main(self, key, value):
+        print(key, value)
+        self.logs(f"{key}:{value}")
         if key == "webBrowserPage":  # 打开浏览器
             self.webBrowserPage(value)
         elif key == "webPageElementClick":  # 点击事件
@@ -387,3 +392,7 @@ class WebDriverRun:
 
 if __name__ == "__main__":
     pass
+    test = ["SELECT TIMESTAMPDIFF(Second,'", '@time', "', '", '@rideTime', ":00');"]
+    data = WebDriverRun()
+    data.globalVariable = {"@time": "2023-05-16 15:37:10", "@rideTime": "2023-05-16 15:37:50"}
+    print(data.strValue(test))
