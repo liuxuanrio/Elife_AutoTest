@@ -132,7 +132,10 @@ class AutoFile(WebDriverRun):
 class OpenFile():
     def testFileCase(self, fliename):
         if fliename:
-            file_name_list = fliename.split(",")
+            if "," in fliename:
+                file_name_list = fliename.split(",")
+            else:
+                file_name_list = [fliename]
         else:
             import os
             # path定义要获取的文件名称的目录
