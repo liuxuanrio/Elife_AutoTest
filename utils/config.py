@@ -110,9 +110,6 @@ class DataType:
                 pass
         return data
 
-
-
-
 # 获取文件信息
 class FileDate:
 
