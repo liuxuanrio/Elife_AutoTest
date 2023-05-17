@@ -637,6 +637,23 @@ sequence
     0
   )
   webPageElementClick
+  ^ 刷新订单列表
+  (
+    @chr
+    "xpath"
+    "//*[@id=\"index_rides_mgmt\"]//*[@id=\"rides-reload-btn\"]"
+    100
+    3
+    0
+    1
+  )
+  sleep
+  (
+    5
+    0
+    0
+  )
+  webPageElementClick
   ^ 点击第三笔订单抢单
   (
     @ch2
