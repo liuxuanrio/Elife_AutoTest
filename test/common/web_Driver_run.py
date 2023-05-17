@@ -410,7 +410,7 @@ class WebDriverRun:
                                 time.sleep(sumtime)
                                 break
                     else:
-                        time.sleep(int(value[0]))
+                        time.sleep(int(timeValue))
                 else:
                     self.logs(f"等待时间超时：{str(timeValue)}")
             else:
