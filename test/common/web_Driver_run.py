@@ -183,19 +183,19 @@ class WebDriverRun:
         # 把获取的值保存到全局参数self.globalVariable
         self.chrIndex(value[2][0])
         try:
-            self.globalVariable[value[0]] = self.chrlist[self.chrindex].find_element(By.XPATH, value[2][2]).\
-                get_attribute('innerText')
+            self.globalVariables(value[0], self.chrlist[self.chrindex].find_element(By.XPATH, value[2][2]).\
+                get_attribute('innerText'))
             self.logs(f"获取元素成功：{value[0]}={self.globalVariable[value[0]]}")
         except:
             try:
-                self.globalVariable[value[0]] = self.chrlist[self.chrindex].find_element(By.XPATH, value[2][2]).text
+                self.globalVariables(value[0], self.chrlist[self.chrindex].find_element(By.XPATH, value[2][2]).text)
             except:
                 try:
-                    self.globalVariable[value[0]] = self.chrlist[self.chrindex].find_element(By.XPATH, value[2][2]). \
-                        get_attribute('innerText')
+                    self.globalVariables(value[0], self.chrlist[self.chrindex].find_element(By.XPATH, value[2][2]). \
+                        get_attribute('innerText'))
                 except:
                     self.logs(f"获取元素失败：{value}")
-                    self.globalVariable[value[0]] = ""
+                    self.globalVariables(value[0], "")
 
     def DBmysql(self, value):
         sqlvalue = value[2][1][1]
@@ -211,9 +211,9 @@ class WebDriverRun:
                 for x in i:
                     retlist1.append(TimeMethod().dayStrftime(x))
                 retlist.append(retlist1)
-            self.globalVariable[value[0]] = retlist
+            self.globalVariables(value[0], retlist)
         else:
-            self.globalVariable[value[0]] = MYSQL_starter_test().ExecNonQuery(sqlvalue)
+            self.globalVariables(value[0], MYSQL_starter_test().ExecNonQuery(sqlvalue))
 
     # 执行sql
     def tableStream(self, value):
@@ -221,6 +221,7 @@ class WebDriverRun:
             sqlvalue = self.strValue(value[1][2])
         else:
             sqlvalue = value[1][1]
+        self.logs(sqlvalue)
         ret = MYSQL_starter_test().ExecNonQuery(sqlvalue)
         self.logs(ret)
 
@@ -229,11 +230,11 @@ class WebDriverRun:
         if value[1] == "dateTimeFormat":  # 获取当前时间
             if "-" in value[2][1]:  # 有日期格式的
                 if 'ss' in value[2][1]:
-                    self.globalVariable[value[0]] = TimeMethod().newTimeDates()
+                    self.globalVariables(value[0], TimeMethod().newTimeDates())
                 else:
-                    self.globalVariable[value[0]] = TimeMethod().newTimeDate()
+                    self.globalVariables(value[0], TimeMethod().newTimeDate())
             else:  # 转数字的
-                self.globalVariable[value[0]] = TimeMethod().intNowTimeDate()
+                self.globalVariables(value[0], TimeMethod().intNowTimeDate())
         elif value[1] == "fileRun":  # 获取短信验证码
             self.globalVariable[value[0]] = selectGmail(1)
         elif value[1] == "webElementValue":  # 获取元素值
@@ -246,16 +247,16 @@ class WebDriverRun:
             self.DBmysql(value)
         elif value[1] == "selInPlace":  # 获取list中的值
             if value[2][0] in self.globalVariable.keys():
-                self.globalVariable[value[0]] = self.globalVariable[value[2][0]][int(value[2][1])][int(value[2][2])]
+                self.globalVariables(value[0], self.globalVariable[value[2][0]][int(value[2][1])][int(value[2][2])])
             else:
-                self.globalVariable[value[0]] = ""
+                self.globalVariables(value[0], "")
         elif value[1] == "strSub":  # 截断字符串
             if value[2][0] == "str":
-                self.globalVariable[value[0]] = self.strValue(value[2][1])[int(value[2][-2]):int(value[2][-1])]
+                self.globalVariables(value[0], self.strValue(value[2][1])[int(value[2][-2]):int(value[2][-1])])
             elif value[2][0] in self.globalVariable.keys():
-                self.globalVariable[value[0]] = self.globalVariable[value[2][0]][int(value[2][1]):int(value[2][2])]
+                self.globalVariables(value[0], self.globalVariable[value[2][0]][int(value[2][1]):int(value[2][2])])
             else:
-                self.globalVariable[value[0]] = ""
+                self.globalVariables(value[0], "")
 
         elif value[1] == "sel":  # 获取list中对应的值
             if value[2][0] in self.globalVariable.keys():
@@ -263,19 +264,19 @@ class WebDriverRun:
                     selindex = self.globalVariable[value[2][1]]
                 else:
                     selindex = value[2][1]
-                self.globalVariable[value[0]] = self.globalVariable[value[2][0]][int(selindex)]
+                self.globalVariables(value[0], self.globalVariable[value[2][0]][int(selindex)])
             else:
-                self.globalVariable[value[0]] = ""
+                self.globalVariables(value[0], "")
 
         elif value[1] == "valueOf":
             if len(value[2]) > 1:
-                self.globalVariable[value[0]] = self.strValue(value[2][1])
+                self.globalVariables(value[0], self.strValue(value[2][1]))
             else:
                 self.logs(f"不执行:{value}")
 
         elif value[1] == "split":
             if value[2][0] in self.globalVariable.keys():
-                self.globalVariable[value[0]] = self.globalVariable[value[2][0]].split(value[2][1])
+                self.globalVariables(value[0], self.globalVariable[value[2][0]].split(value[2][1]))
             else:
                 self.logs(f"未找到参数:{value}")
         else:
@@ -311,7 +312,7 @@ class WebDriverRun:
     # for循环
     def loopStream(self, value):
         for i in range(int(value[2][1])):
-            self.globalVariable[value[0]] = i
+            self.globalVariables(value[0], i)
             self.ifForRun(value[3:])
 
 
@@ -328,8 +329,7 @@ class WebDriverRun:
     def args(self, kvlist):
         for kv in kvlist:
             if type(kv) == list:
-                self.globalVariable[kv[0]] = kv[1]
-        print(self.globalVariable)
+                self.globalVariables(kv[0], kv[1])
 
     # str中参数处理
     def strValue(self, value):
@@ -352,6 +352,11 @@ class WebDriverRun:
         else:
             values = value
         return values
+
+    # 保存变量
+    def globalVariables(self, key, value):
+        self.logs(f"保存变量：{str(key)}:{str(value)}")
+        self.globalVariable[key] = value
 
     def logs(self, logs):
         newTime = TimeMethod().newTimeDates()
