@@ -630,6 +630,12 @@ sequence
       0
     )
   )
+  sleep
+  (
+    10
+    0
+    0
+  )
   webPageElementClick
   ^ 点击第三笔订单抢单
   (
