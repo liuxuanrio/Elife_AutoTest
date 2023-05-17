@@ -293,7 +293,7 @@ class WebDriverRun:
         else:
             ifvalue2 = self.strValue(value[1][1])
         if value[0] == "equal":  # 相等
-            if ifvalue1 == ifvalue2:  # 判断通过
+            if str(ifvalue1) == str(ifvalue2):  # 判断通过
                 self.ifstat = 0
                 self.ifForRun(value[2:])
             else:
@@ -398,18 +398,21 @@ class WebDriverRun:
             else:
                 timeValue = self.strValue(value[0])
             self.logs(f"强制等待:{str(timeValue)}")
-            if int(timeValue) > 0:
-                if int(timeValue) > 60:
-                    sumtime = int(timeValue)
-                    for i in range(5):
-                        if sumtime > 60:
-                            time.sleep(60)
-                            sumtime -= 60
-                        else:
-                            time.sleep(sumtime)
-                            break
+            if timeValue != None:
+                if int(timeValue) > 0:
+                    if int(timeValue) > 60:
+                        sumtime = int(timeValue)
+                        for i in range(5):
+                            if sumtime > 60:
+                                time.sleep(60)
+                                sumtime -= 60
+                            else:
+                                time.sleep(sumtime)
+                                break
+                    else:
+                        time.sleep(int(value[0]))
                 else:
-                    time.sleep(int(value[0]))
+                    self.logs(f"等待时间超时：{str(timeValue)}")
             else:
                 self.logs(f"等待时间超时：{timeValue}")
         else:
