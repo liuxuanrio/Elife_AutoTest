@@ -17,7 +17,7 @@ from test.suite.ui_auto_test_suite import OpenFile, AutoFile
 @allure.feature("Driver_App")
 class Test_merchants_go:
 
-    @pytest.mark.parametrize('casename', OpenFile().testFileCase("driver_app_Ride_Accept.mqt"))  # 获取test/case中的用例文件
+    @pytest.mark.parametrize('casename', OpenFile().testFileCase(""))  # 获取test/case中的用例文件
     def test_merchant_action(self, casename):
         # 用例名称
         allure.dynamic.title(casename)
