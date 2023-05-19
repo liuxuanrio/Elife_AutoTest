@@ -370,7 +370,7 @@ sequence
     (
       str
       (
-        "1.  FALSE   "
+        "1.  PASS   "
         @iftime1
         "!="
         @iftime2
