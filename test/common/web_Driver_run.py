@@ -1,12 +1,4 @@
-import os,sys
 import traceback
-
-curPath = os.path.abspath(os.path.dirname(__file__))
-rootPath = os.path.split(curPath)[0]
-PathProject = os.path.split(rootPath)[0]
-sys.path.append(rootPath)
-sys.path.append(PathProject)
-
 from selenium.common import exceptions
 from selenium import webdriver
 import time
@@ -44,6 +36,9 @@ class WebDriverRun:
 
         # 保存path
         self.path = ""
+
+        # 获取运行的项目
+        self.project_name = ""
 
     def iselement(self, xpath):
         """
@@ -171,7 +166,9 @@ class WebDriverRun:
         self.system_test = 0
         self.caseutc = ""
         self.path = ""
+        self.project_name = ""
 
+    # 截图
     def screenshot(self):
         for i in range(len(self.chrstrlist)):
             time = TimeMethod().newTimeDates()
@@ -236,7 +233,10 @@ class WebDriverRun:
             else:  # 转数字的
                 self.globalVariables(value[0], TimeMethod().intNowTimeDate())
         elif value[1] == "fileRun":  # 获取短信验证码
-            self.globalVariable[value[0]] = selectGmail(1)
+            if "gmailcode" in value[2][0]:
+                self.globalVariable[value[0]] = selectGmail(1)
+            else:
+                self.logs("未找到当前打开文件的方法")
         elif value[1] == "webElementValue":  # 获取元素值
             self.webElementValue(value)
         elif value[1] == "webPageElements":

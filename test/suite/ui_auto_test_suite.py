@@ -1,14 +1,7 @@
-import os,sys
-import time
+from openpyxl.reader.excel import load_workbook
 
+from config.projectConfig import ProjectConfig
 from utils.config import FileDate, TimeMethod, DataType
-
-curPath = os.path.abspath(os.path.dirname(__file__))
-rootPath = os.path.split(curPath)[0]
-PathProject = os.path.split(rootPath)[0]
-sys.path.append(rootPath)
-sys.path.append(PathProject)
-
 import traceback
 from test.common.web_Driver_run import WebDriverRun
 
@@ -25,9 +18,14 @@ class AutoFile(WebDriverRun):
 
         if "jenkins_home" in picturePath:
             self.system_test = 1
+        else:
+            self.project_name = "driver_app_ui_testcase.xlsx"
 
-        # 打开脚本文件
-        file = open(f'{script_path}/test/case/{filename}', 'r', encoding='utf8')
+        # 打开脚本文件 判断文件属于哪个项目
+        if "driver_app" in filename:
+            file = open(f'{script_path}/test/case/driver_app_case/{filename}', 'r', encoding='utf8')
+        else:
+            file = open(f'{script_path}/test/case/driver_app_case/{filename}', 'r', encoding='utf8')
 
         # 读取文件为list
         lists = file.readlines()[2:-1]
@@ -46,7 +44,7 @@ class AutoFile(WebDriverRun):
                         pass
                         valuelist = self.for_list(valuelist[1:-1])
                     self.transfer(key, valuelist)
-                    # self.logs(f"{key}:{valuelist}")
+                    print(key, valuelist)
                 # 执行方法运行后，value设置为空
                 valuelist = []
                 # 保存符合条件的字符为key
@@ -115,7 +113,7 @@ class AutoFile(WebDriverRun):
                         valuelist.append(data)
                     else:
                         if "^" in data:
-                            pass
+                            self.logs(data)
                         else:
                             if data == "', '":
                                 pass
@@ -137,29 +135,62 @@ class AutoFile(WebDriverRun):
 
 
 class OpenFile():
-    def testFileCase(self, filename):
-        if filename:
-            if "," in filename:
-                file_name_list = filename.split(",")
+    # 读取用例表格并转化成list
+    def openXlsx(self, path, fileName):
+        excelDir = fr'{path}/test/case/{fileName}'  # 打开xlsx文件
+        workBook = load_workbook(excelDir)  # 保存原样--样式
+        # 2- 操作对应的用例表
+        workSheet = workBook.worksheets[0]
+        dataList = []
+        cnt = 1
+        for cnts in workSheet.rows:
+            if cnt > 2:
+                caseProject = workSheet.cell(cnt, 1).value  # 用例项目
+                caseModule = workSheet.cell(cnt, 2).value  # 用例模块
+                caseTitle = workSheet.cell(cnt, 3).value  # 用例标题
+                caseDescription = workSheet.cell(cnt, 4).value   # 用例描述
+                casePoint = workSheet.cell(cnt, 5).value   # 测试点
+                dataList.append([caseProject, caseModule, caseTitle, caseDescription, casePoint])
+            cnt += 1
+        return dataList  # 列表
+
+    # 处理单独运行的脚本数据
+    def updateFileList(self, projectName, fileList):
+        dataList = []
+        for name in fileList:
+            dataList.append([projectName, projectName, name, projectName, projectName])
+        return dataList
+
+    # 获取执行脚本list
+    def testFileCase(self):
+        path = FileDate().osFilePath()  # 获取文件路径
+        fileConfig = ProjectConfig().projectConfig()
+        # 判断当前项目运行环境
+        if "jenkins_home" in path:
+            if "Elife_UI_AutoTest" in path:
+                fileName = fileConfig["driver_app"]["caseName"]
+                runType = fileConfig["driver_app"]["runType"]
             else:
-                file_name_list = [filename]
+                fileName = fileConfig["driver_app"]["caseName"]
+                runType = fileConfig["driver_app"]["runType"]
+        else:  # 本地调试可手动修改需要执行的文件
+            fileName = fileConfig["driver_app"]["caseName"]
+            runType = fileConfig["driver_app"]["runType"]
+
+        if runType:
+            if "," in runType:
+                file_name_list = runType.split(",")
+            else:
+                file_name_list = [runType]
+            file_name_list = self.updateFileList("driver_app", file_name_list)
         else:
-            import os
-            # path定义要获取的文件名称的目录
-            script_path = FileDate().osFilePath()
-            paths = f"{script_path}/test/case"
-
-            # os.listdir()方法获取文件夹名字，返回数组
-            file_name_list = os.listdir(paths)
-
+            file_name_list = self.openXlsx(path, fileName)
         return file_name_list
 
 
 if __name__ == "__main__":
     pass
-    caseutc = TimeMethod().intNewTimeUtc()
-    case = AutoFile().openFile("driver_app_Ride_Accept.mqt", caseutc)
-    print(case)
-    # case = AutoFile().filetest("test.mqt")
-    # for i in case:
-    #     print(AutoFile().openFile(i))
+    # caseutc = TimeMethod().intNewTimeUtc()
+    # case = AutoFile().openFile("driver_app_update_password.mqt", caseutc)
+    # print(case)
+    case = print(OpenFile().testFileCase())
