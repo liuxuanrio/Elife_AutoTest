@@ -6,6 +6,6 @@ class ProjectConfig:
         :return:
         """
         config = {
-            "driver_app": {"caseName": "driver_app_ui_testcase.xlsx", "runType": "driver_app_update_password.mqt"}
+            "driver_app": {"caseName": "driver_app_ui_testcase.xlsx", "runType": ""}
         }
         return config
