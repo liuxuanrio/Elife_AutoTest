@@ -234,7 +234,7 @@ sequence
     streamDbSql
     (
       @db
-      "update ride.dispatch set stat = '134217729', fleet_driver_id = null, meeting_place_id=null, reversal=null,trip_no_x=trip_no where to_fleet_id in ('11466','11468');"
+      "update ride.dispatch set stat = '134217729', fleet_driver_id = null, meeting_place_id=null, reversal=null,trip_no_x=trip_no where to_fleet_id in ('11466','11468') and ride_id in (116214,116216,116215,116216);"
     )
   )
   tableStream
@@ -275,14 +275,6 @@ sequence
     (
       @db
       "delete from ride.note_dispatch where dispatch_id in (select id from ride.dispatch where to_fleet_id in ('11466','11468'));"
-    )
-  )
-  tableStream
-  (
-    streamDbSql
-    (
-      @db
-      "delete from ride.dispatch where to_fleet_id in ('11466','11468');"
     )
   )
   tableStream
