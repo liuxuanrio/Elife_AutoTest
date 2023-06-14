@@ -16,12 +16,6 @@ sequence
     @chr
     "chrome://flags/#unsafely-treat-insecure-origin-as-secure"
   )
-  sleep
-  (
-    5
-    0
-    0
-  )
   webPageElementInput
   (
     @chr

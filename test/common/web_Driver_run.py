@@ -108,16 +108,18 @@ class WebDriverRun:
         else:
             self.chrIndex(name)
         # 打开浏览器
+        self.system_test = 1
         if self.system_test == 1:
             option = webdriver.ChromeOptions()
             # 无头模式
-            option.add_argument('headless')
+            # option.add_argument('headless')
             # 沙盒模式运行
             option.add_argument('no-sandbox')
             # 大量渲染时候写入/tmp而非/dev/shm
-            option.add_argument('disable-dev-shm-usage')
+            # option.add_argument('disable-dev-shm-usage')
             # 设置语言为中文
-            option.add_argument('lang=zh-CN')
+            # option.add_argument('lang=zh-CN')
+
 
             self.chrlist[self.chrindex] = webdriver.Chrome(options=option)
         else:
