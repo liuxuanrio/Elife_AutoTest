@@ -18,14 +18,15 @@ class AutoFile(WebDriverRun):
 
         if "jenkins_home" in picturePath:
             self.system_test = 1
-        else:
-            self.project_name = "driver_app_ui_testcase.xlsx"
+
+        # 获取配置文件中测试数据路径
+        configData = OpenFile().runConfig(script_path)
+
+        self.testData = configData["testData"]
 
         # 打开脚本文件 判断文件属于哪个项目
-        if "driver_app" in filename:
-            file = open(f'{script_path}/test/case/driver_app_case/{filename}', 'r', encoding='utf8')
-        else:
-            file = open(f'{script_path}/test/case/driver_app_case/{filename}', 'r', encoding='utf8')
+        file = open(f'{configData["testCase"]}{filename}', 'r', encoding='utf8')
+
 
         # 读取文件为list
         lists = file.readlines()[2:-1]
@@ -164,19 +165,9 @@ class OpenFile():
     # 获取执行脚本list
     def testFileCase(self):
         path = FileDate().osFilePath()  # 获取文件路径
-        fileConfig = ProjectConfig().projectConfig()
-        # 判断当前项目运行环境
-        if "jenkins_home" in path:
-            if "Elife_UI_AutoTest" in path:
-                fileName = fileConfig["driver_app"]["caseName"]
-                runType = fileConfig["driver_app"]["runType"]
-            else:
-                fileName = fileConfig["driver_app"]["caseName"]
-                runType = fileConfig["driver_app"]["runType"]
-        else:  # 本地调试可手动修改需要执行的文件
-            fileName = fileConfig["driver_app"]["caseName"]
-            runType = fileConfig["driver_app"]["runType"]
-
+        configData = self.runConfig(path)
+        runType = configData["runType"]
+        fileName = configData["fileName"]
         if runType:
             if "," in runType:
                 file_name_list = runType.split(",")
@@ -187,10 +178,47 @@ class OpenFile():
             file_name_list = self.openXlsx(path, fileName)
         return file_name_list
 
+    def runConfig(self, path):
+        fileConfig = ProjectConfig().projectConfig()
+        # 判断当前项目运行环境
+        if "jenkins_home" in path:
+            if "Elife_UI_AutoTest" in path:
+                fileName = fileConfig["driver_app"]["caseName"]
+                runType = fileConfig["driver_app"]["runType"]
+                testData = f'{path}{fileConfig["driver_app"]["testData"]}'
+                testCase = f'{path}{fileConfig["driver_app"]["testCase"]}'
+            else:
+                fileName = fileConfig["driver_app"]["caseName"]
+                runType = fileConfig["driver_app"]["runType"]
+                testData = f'{path}{fileConfig["driver_app"]["testData"]}'
+                testCase = f'{path}{fileConfig["driver_app"]["testCase"]}'
+        else:  # 本地调试可手动修改需要执行的文件
+            fileName = fileConfig["driver_app"]["caseName"]
+            runType = fileConfig["driver_app"]["runType"]
+            testData = f'{path}{fileConfig["driver_app"]["testData"]}'
+            testCase = f'{path}{fileConfig["driver_app"]["testCase"]}'
+        configData = {"fileName": fileName, "runType": runType,
+                      "testData": testData, "testCase": testCase}
+        return configData
+
+def csvflies():
+    import csv
+    path = FileDate().osFilePath()
+    dataList = []
+    filename = f'{path}/data/test_case_file/driver_app/more.csv'
+    with open(filename, "r") as csvfile:
+        csvreader = csv.reader(csvfile)
+        for row in csvreader:
+            dataList.append(row)
+            print(row)
+    csvfile.close()
+    print(dataList[1:])
+
 
 if __name__ == "__main__":
     pass
     caseutc = TimeMethod().intNewTimeUtc()
-    case = AutoFile().openFile("driver_app_update_password.mqt", caseutc)
+    case = AutoFile().openFile("driver_app_Ride_More1.mqt", caseutc)
+    csvflies()
     # print(case)
     # case = print(OpenFile().testFileCase())

@@ -1,7 +1,9 @@
+import json
 import traceback
 from selenium.common import exceptions
 from selenium import webdriver
 import time
+import csv
 from selenium.webdriver.common.by import By
 
 from test.common.gamilCode import selectGmail
@@ -37,8 +39,8 @@ class WebDriverRun:
         # 保存path
         self.path = ""
 
-        # 获取运行的项目
-        self.project_name = ""
+        # 获取项目运行的测试数据路径
+        self.testData = ""
 
     def iselement(self, xpath):
         """
@@ -89,7 +91,6 @@ class WebDriverRun:
             except:
                 errorlog = traceback.print_exc()
                 self.logs(f"执行报错：{xpath}{errorlog}  -----------------------------------------------")
-                time.sleep(1)
 
     # 获取当前打开chrome
     def chrIndex(self, name):
@@ -133,7 +134,7 @@ class WebDriverRun:
 
     # 点击元素
     def webPageElementClick(self, xpath):
-        time.sleep(2)
+        time.sleep(1)
         self.chrlist[self.chrindex].find_element(By.XPATH, xpath).click()
 
     # 输入信息
@@ -143,10 +144,13 @@ class WebDriverRun:
         else:
             values = self.strValue(value[5])
 
-        time.sleep(2)
         # 清除输入框内容
         self.chrlist[self.chrindex].find_element(By.XPATH, xpath).clear()
-        self.chrlist[self.chrindex].find_element(By.XPATH, xpath).send_keys(values)
+        if "ride-id-search-fld" in xpath:
+            self.chrlist[self.chrindex].find_element(By.XPATH, xpath).send_keys(f"{values}\n")
+        else:
+            self.chrlist[self.chrindex].find_element(By.XPATH, xpath).send_keys(values)
+
 
     # 关闭浏览器
     def webquit(self, path, caseutc):
@@ -166,7 +170,7 @@ class WebDriverRun:
         self.system_test = 0
         self.caseutc = ""
         self.path = ""
-        self.project_name = ""
+        self.testData = ""
 
     # 截图
     def screenshot(self):
@@ -194,6 +198,16 @@ class WebDriverRun:
                     self.logs(f"获取元素失败：{value}")
                     self.globalVariables(value[0], "")
 
+    # 获取元素json
+    def webElementInfo(self, value):
+        self.chrIndex(value[2][0])
+        try:
+            displayed = self.chrlist[self.chrindex].find_element(By.XPATH, value[2][2]).is_displayed()
+            self.globalVariables(value[0], {"displayed": displayed})
+            self.logs(f"获取元素成功：{value[0]}={self.globalVariable[value[0]]}")
+        except:
+            self.logs(f"获取元素失败：{value}")
+            self.globalVariables(value[0], "")
     def DBmysql(self, value):
         sqlvalue = value[2][1][1]
         if sqlvalue == "str":
@@ -237,8 +251,12 @@ class WebDriverRun:
                 self.globalVariable[value[0]] = selectGmail(1)
             else:
                 self.logs("未找到当前打开文件的方法")
+        elif value[1] == "fileReadOpen":
+            self.globalVariables(value[0], f"{self.testData}{value[2][0].split('/')[-1]}")
         elif value[1] == "webElementValue":  # 获取元素值
             self.webElementValue(value)
+        elif value[1] == "webElementInfo":  # 获取元素状态
+            self.webElementInfo(value)
         elif value[1] == "webPageElements":
             self.webPageif(value, 3)
         elif value[1] == "webBrowser":  # 打开浏览器
@@ -264,7 +282,10 @@ class WebDriverRun:
                     selindex = self.globalVariable[value[2][1]]
                 else:
                     selindex = value[2][1]
-                self.globalVariables(value[0], self.globalVariable[value[2][0]][int(selindex)])
+                if selindex.isdigit():
+                    self.globalVariables(value[0], self.globalVariable[value[2][0]][int(selindex)])
+                else:
+                    self.globalVariables(value[0], self.globalVariable[value[2][0]][selindex])
             else:
                 self.globalVariables(value[0], "")
 
@@ -285,23 +306,30 @@ class WebDriverRun:
     # 判断方法处理
     def ifelse(self, value):
         # 处理参数
-        if value[1][0] == "str":
-            ifvalue1 = self.strValue(value[1][1])
-        else:
-            ifvalue1 = self.strValue(value[1][0])
-        if value[1][1] == "str":
-            ifvalue2 = self.strValue(value[1][2])
-        else:
-            ifvalue2 = self.strValue(value[1][1])
-        if value[0] == "equal":  # 相等
-            if str(ifvalue1) == str(ifvalue2):  # 判断通过
-                self.ifstat = 0
-                self.ifForRun(value[2:])
+        if value[0] == "equal" or value[0] == "greaterEqual":
+            if value[1][0] == "str":
+                ifvalue1 = self.strValue(value[1][1])
             else:
-                self.ifstat = 1
+                ifvalue1 = self.strValue(value[1][0])
+            if value[1][1] == "str":
+                ifvalue2 = self.strValue(value[1][2])
+            else:
+                ifvalue2 = self.strValue(value[1][1])
+            if value[0] == "equal":  # 相等
+                if str(ifvalue1) == str(ifvalue2):  # 判断通过
+                    self.ifstat = 0
+                    self.ifForRun(value[2:])
+                else:
+                    self.ifstat = 1
 
-        elif value[0] == "greaterEqual":  # 大于等于
-            if int(ifvalue1) >= int(ifvalue2):  # 判断通过
+            elif value[0] == "greaterEqual":  # 大于等于
+                if int(ifvalue1) >= int(ifvalue2):  # 判断通过
+                    self.ifstat = 0
+                    self.ifForRun(value[2:])
+                else:
+                    self.ifstat = 1
+        elif value[0] == "assign":
+            if self.globalVariable[value[1][0]]:
                 self.ifstat = 0
                 self.ifForRun(value[2:])
             else:
@@ -311,10 +339,23 @@ class WebDriverRun:
 
     # for循环
     def loopStream(self, value):
-        for i in range(int(value[2][1])):
-            self.globalVariables(value[0], i)
-            self.ifForRun(value[3:])
-
+        if value[1] == "streamRange":  # 循环range
+            for i in range(int(value[2][1])):
+                self.globalVariables(value[0], i)
+                self.ifForRun(value[3:])
+        elif value[1] == "streamFileCsv":
+            filename = self.globalVariable[value[2][0]]
+            fileList = []
+            with open(filename, "r") as csvfile:
+                csvreader = csv.reader(csvfile)
+                for row in csvreader:
+                    fileList.append(row)
+            csvfile.close()
+            for i in fileList[1:]:
+                self.globalVariables(value[0], i)
+                self.ifForRun(value[3:])
+        else:
+            self.logs(f"循环方法：{value[1]}")
 
     # 嵌套中的方法处理
     def ifForRun(self, valueList):
@@ -338,19 +379,27 @@ class WebDriverRun:
             for s in value:
                 if s[0: 1] == "@":
                     if s in self.globalVariable.keys():
-                        values += self.globalVariable[s]
+                        info = str(self.globalVariable[s])
+                        if info == "True" or info == "False":
+                            values += info.lower()
+                        else:
+                            values += info
                     else:
                         # 获取参数不存在
                         self.logs(f"获取参数失败：{str(value)}---{s}")
                 else:
-                    values += s
+                    values += str(s)
         elif value[0:1] == "@":  # 判断是否为变量
             if value in self.globalVariable.keys():  # 判断变量是否在全局变量中
-                values = self.globalVariable[value]
+                info = str(self.globalVariable[value])
+                if info == "True" or info == "False":
+                    values = info.lower()
+                else:
+                    values = info
             else:
-                values = value
+                values = str(value)
         else:
-            values = value
+            values = str(value)
         return values
 
     # 保存变量
