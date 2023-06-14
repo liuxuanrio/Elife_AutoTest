@@ -201,24 +201,11 @@ class OpenFile():
                       "testData": testData, "testCase": testCase}
         return configData
 
-def csvflies():
-    import csv
-    path = FileDate().osFilePath()
-    dataList = []
-    filename = f'{path}/data/test_case_file/driver_app/more.csv'
-    with open(filename, "r") as csvfile:
-        csvreader = csv.reader(csvfile)
-        for row in csvreader:
-            dataList.append(row)
-            print(row)
-    csvfile.close()
-    print(dataList[1:])
 
 
 if __name__ == "__main__":
     pass
     caseutc = TimeMethod().intNewTimeUtc()
     case = AutoFile().openFile("chrom_config.mqt", caseutc)
-    csvflies()
     # print(case)
     # case = print(OpenFile().testFileCase())

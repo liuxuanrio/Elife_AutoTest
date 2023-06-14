@@ -108,24 +108,30 @@ class WebDriverRun:
         else:
             self.chrIndex(name)
         # 打开浏览器
-        self.system_test = 1
         if self.system_test == 1:
             option = webdriver.ChromeOptions()
             # 无头模式
-            # option.add_argument('headless')
+            option.add_argument('headless')
             # 沙盒模式运行
             option.add_argument('no-sandbox')
             # 大量渲染时候写入/tmp而非/dev/shm
-            # option.add_argument('disable-dev-shm-usage')
+            option.add_argument('disable-dev-shm-usage')
             # 设置语言为中文
-            # option.add_argument('lang=zh-CN')
-
-
+            option.add_argument('lang=zh_CN.UTF-8')
+            # 设置浏览器权限
+            option.add_experimental_option("prefs", {
+                "profile.default_content_setting_values.media_stream_mic": 1,  # 麦克风 1:allow, 2:block
+                "profile.default_content_setting_values.media_stream_camera": 1,  # 摄像头 1:allow, 2:block
+                "profile.default_content_setting_values.geolocation": 1,  # 地理位置 1:allow, 2:block
+                "profile.default_content_setting_values.notifications": 1  # 通知 1:allow, 2:block
+            })
             self.chrlist[self.chrindex] = webdriver.Chrome(options=option)
         else:
             self.chrlist[self.chrindex] = webdriver.Chrome()
+
         # 窗口最大化
-        self.chrlist[self.chrindex].maximize_window()
+        # self.chrlist[self.chrindex].minimize_window()
+        # self.chrlist[self.chrindex].maximize_window()
 
     # 打开url
     def webBrowserPage(self, value):
