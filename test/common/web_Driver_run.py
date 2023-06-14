@@ -123,9 +123,17 @@ class WebDriverRun:
                 "profile.default_content_setting_values.media_stream_mic": 1,  # 麦克风 1:allow, 2:block
                 "profile.default_content_setting_values.media_stream_camera": 1,  # 摄像头 1:allow, 2:block
                 "profile.default_content_setting_values.geolocation": 1,  # 地理位置 1:allow, 2:block
-                "profile.default_content_setting_values.notifications": 1  # 通知 1:allow, 2:block
+                "profile.default_content_setting_values.notifications": 1,  # 通知 1:allow, 2:block
+                "profile.default_content_settings.geolocation": 1,
+                "profile.default_content_settings.popups": 0
             })
             self.chrlist[self.chrindex] = webdriver.Chrome(options=option)
+            self.chrlist[self.chrindex].execute_script("""navigator.geolocation.getCurrentPosition = function(success, failure) { 
+                  success({ 
+                    coords: {latitude: -43.5333, longitude: 172.633}, 
+                    timestamp: Date.now(), 
+                  }); 
+                }""")
         else:
             self.chrlist[self.chrindex] = webdriver.Chrome()
 
