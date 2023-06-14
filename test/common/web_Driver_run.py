@@ -116,6 +116,11 @@ class WebDriverRun:
             option.add_argument('no-sandbox')
             # 大量渲染时候写入/tmp而非/dev/shm
             option.add_argument('disable-dev-shm-usage')
+            # 以最高权限启动
+            option.add_argument('--no-sandbox')
+            # 设置语言为中文
+            option.add_argument('--lang=zh-CN')
+
             self.chrlist[self.chrindex] = webdriver.Chrome(options=option)
         else:
             self.chrlist[self.chrindex] = webdriver.Chrome()
