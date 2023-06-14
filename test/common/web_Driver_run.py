@@ -183,6 +183,7 @@ class WebDriverRun:
             time = TimeMethod().newTimeDates()
             pngName = self.path + "_" + self.caseutc + "_" + time + f"_{self.chrstrlist[i]}.png"
             self.chrlist[i].save_screenshot(pngName)
+            print("截图===========================================")
 
     # 获取元素值
     def webElementValue(self, value):
