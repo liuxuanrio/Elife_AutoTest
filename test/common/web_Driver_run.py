@@ -460,6 +460,7 @@ class WebDriverRun:
         elif key == "else":
             if self.ifstat == 1:
                 self.ifForRun(value)
+                self.ifstat = 0
         elif key == "print":
             if value[0] == "str":
                 value = self.strValue(value[1])
