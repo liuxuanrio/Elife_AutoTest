@@ -206,6 +206,6 @@ class OpenFile():
 if __name__ == "__main__":
     pass
     caseutc = TimeMethod().intNewTimeUtc()
-    case = AutoFile().openFile("chrom_config.mqt", caseutc)
+    case = AutoFile().openFile("driver_app_Ride_More1.mqt", caseutc)
     # print(case)
     # case = print(OpenFile().testFileCase())

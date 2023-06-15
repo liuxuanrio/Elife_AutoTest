@@ -310,7 +310,9 @@ class WebDriverRun:
                 self.globalVariables(value[0], "")
 
         elif value[1] == "valueOf":
-            if len(value[2]) > 1:
+            if len(value[2]) == 1:
+                self.globalVariables(value[0], self.strValue(value[2][0]))
+            elif len(value[2]) > 1:
                 self.globalVariables(value[0], self.strValue(value[2][1]))
             else:
                 self.logs(f"不执行:{value}")
