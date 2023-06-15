@@ -729,7 +729,7 @@ sequence
     (
       @chr
       "xpath"
-      "//*[@id=\"dispatch_detail\"]//*[@id=\"gps-tutorial-finish\"]"
+      "//*[@id=\"dispatch_detail\"]//*[@id=\"second-gps-tutorial-finish\"]"
       100
       3
       0
@@ -1283,7 +1283,7 @@ sequence
     (
       @chr
       "xpath"
-      "//*[@id=\"dispatch_detail\"]//*[@id=\"gps-tutorial-finish\"]"
+      "//*[@id=\"dispatch_detail\"]//*[@id=\"second-gps-tutorial-finish\"]"
       100
       3
       0
