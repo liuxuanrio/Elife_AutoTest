@@ -297,7 +297,7 @@ sequence
     )
     sleep
     (
-      3
+      5
       0
       0
     )
@@ -675,7 +675,7 @@ sequence
     )
     sleep
     (
-      2
+      5
       0
       0
     )
@@ -1246,7 +1246,7 @@ sequence
     )
     sleep
     (
-      2
+      5
       0
       0
     )
@@ -1805,7 +1805,7 @@ sequence
     )
     sleep
     (
-      3
+      5
       0
       0
     )
@@ -2187,7 +2187,7 @@ sequence
     )
     sleep
     (
-      3
+      5
       0
       0
     )
