@@ -692,6 +692,62 @@ sequence
     )
     sleep
     (
+      2
+      0
+      0
+    )
+    webPageElementClick
+    ^ 点击Done按钮关闭gps弹框
+    (
+      @chr
+      "xpath"
+      "//*[@id=\"dispatch_detail\"]//*[@id=\"gps-tutorial-finish\"]"
+      100
+      3
+      0
+      1
+    )
+    webPageElementClick
+    ^ 点击On my way按钮
+    (
+      @chr
+      "xpath"
+      "//*[@id=\"dispatch_detail\"]//*[@id=\"on-my-way\"]"
+      100
+      3
+      0
+      1
+    )
+    sleep
+    (
+      2
+      0
+      0
+    )
+    webPageElementClick
+    ^ 点击Done按钮关闭gps弹框
+    (
+      @chr
+      "xpath"
+      "//*[@id=\"dispatch_detail\"]//*[@id=\"gps-tutorial-finish\"]"
+      100
+      3
+      0
+      1
+    )
+    webPageElementClick
+    ^ 点击On my way按钮
+    (
+      @chr
+      "xpath"
+      "//*[@id=\"dispatch_detail\"]//*[@id=\"on-my-way\"]"
+      100
+      3
+      0
+      1
+    )
+    sleep
+    (
       3
       0
       0
@@ -1176,6 +1232,62 @@ sequence
       2
       0
       0
+    )
+    webPageElementClick
+    ^ 点击On my way按钮
+    (
+      @chr
+      "xpath"
+      "//*[@id=\"dispatch_detail\"]//*[@id=\"on-my-way\"]"
+      100
+      3
+      0
+      1
+    )
+    sleep
+    (
+      2
+      0
+      0
+    )
+    webPageElementClick
+    ^ 点击Done按钮关闭gps弹框
+    (
+      @chr
+      "xpath"
+      "//*[@id=\"dispatch_detail\"]//*[@id=\"gps-tutorial-finish\"]"
+      100
+      3
+      0
+      1
+    )
+    webPageElementClick
+    ^ 点击On my way按钮
+    (
+      @chr
+      "xpath"
+      "//*[@id=\"dispatch_detail\"]//*[@id=\"on-my-way\"]"
+      100
+      3
+      0
+      1
+    )
+    sleep
+    (
+      2
+      0
+      0
+    )
+    webPageElementClick
+    ^ 点击Done按钮关闭gps弹框
+    (
+      @chr
+      "xpath"
+      "//*[@id=\"dispatch_detail\"]//*[@id=\"gps-tutorial-finish\"]"
+      100
+      3
+      0
+      1
     )
     webPageElementClick
     ^ 点击On my way按钮
