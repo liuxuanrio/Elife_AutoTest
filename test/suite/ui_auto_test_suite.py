@@ -137,22 +137,34 @@ class AutoFile(WebDriverRun):
 
 class OpenFile():
     # 读取用例表格并转化成list
-    def openXlsx(self, path, fileName):
+    def openXlsx(self, path, fileName, module):
         excelDir = fr'{path}/test/case/{fileName}'  # 打开xlsx文件
         workBook = load_workbook(excelDir)  # 保存原样--样式
         # 2- 操作对应的用例表
         workSheet = workBook.worksheets[0]
         dataList = []
         cnt = 1
-        for cnts in workSheet.rows:
-            if cnt > 2:
-                caseProject = workSheet.cell(cnt, 1).value  # 用例项目
-                caseModule = workSheet.cell(cnt, 2).value  # 用例模块
-                caseTitle = workSheet.cell(cnt, 3).value  # 用例标题
-                caseDescription = workSheet.cell(cnt, 4).value   # 用例描述
-                casePoint = workSheet.cell(cnt, 5).value   # 测试点
-                dataList.append([caseProject, caseModule, caseTitle, caseDescription, casePoint])
-            cnt += 1
+        if module:
+            for cnts in workSheet.rows:
+                if cnt > 2:
+                    caseProject = workSheet.cell(cnt, 1).value  # 用例项目
+                    caseModule = workSheet.cell(cnt, 2).value  # 用例模块
+                    caseTitle = workSheet.cell(cnt, 3).value  # 用例标题
+                    caseDescription = workSheet.cell(cnt, 4).value   # 用例描述
+                    casePoint = workSheet.cell(cnt, 5).value   # 测试点
+                    if module in caseModule:
+                        dataList.append([caseProject, caseModule, caseTitle, caseDescription, casePoint])
+                cnt += 1
+        else:
+            for cnts in workSheet.rows:
+                if cnt > 2:
+                    caseProject = workSheet.cell(cnt, 1).value  # 用例项目
+                    caseModule = workSheet.cell(cnt, 2).value  # 用例模块
+                    caseTitle = workSheet.cell(cnt, 3).value  # 用例标题
+                    caseDescription = workSheet.cell(cnt, 4).value   # 用例描述
+                    casePoint = workSheet.cell(cnt, 5).value   # 测试点
+                    dataList.append([caseProject, caseModule, caseTitle, caseDescription, casePoint])
+                cnt += 1
         return dataList  # 列表
 
     # 处理单独运行的脚本数据
@@ -175,7 +187,14 @@ class OpenFile():
                 file_name_list = [runType]
             file_name_list = self.updateFileList("driver_app", file_name_list)
         else:
-            file_name_list = self.openXlsx(path, fileName)
+            file_name_list = self.openXlsx(path, fileName, "")
+        return file_name_list
+
+    def testCaseAll(self, module):
+        path = FileDate().osFilePath()  # 获取文件路径
+        configData = self.runConfig(path)
+        fileName = configData["fileName"]
+        file_name_list = self.openXlsx(path, fileName, module)
         return file_name_list
 
     def runConfig(self, path):
