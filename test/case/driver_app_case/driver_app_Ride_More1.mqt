@@ -952,6 +952,23 @@ sequence
         )
         sleep
         (
+          2
+          0
+          0
+        )
+        webPageElementClick
+        ^ 点击Done按钮关闭gps弹框
+        (
+          @chr
+          "xpath"
+          "//*[@id=\"dispatch_detail\"]//*[@id=\"no-show-gps-warn-ok-btn\"]"
+          100
+          3
+          0
+          1
+        )
+        sleep
+        (
           6
           0
           0
@@ -1946,6 +1963,23 @@ sequence
           @chr
           "xpath"
           "//*[@id=\"dispatch_detail\"]//*[@id=\"no-show-confirmation-confirm-btn\"]"
+          100
+          3
+          0
+          1
+        )
+        sleep
+        (
+          2
+          0
+          0
+        )
+        webPageElementClick
+        ^ 点击Done按钮关闭gps弹框
+        (
+          @chr
+          "xpath"
+          "//*[@id=\"dispatch_detail\"]//*[@id=\"no-show-gps-warn-ok-btn\"]"
           100
           3
           0
