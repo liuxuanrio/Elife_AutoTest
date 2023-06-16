@@ -302,7 +302,7 @@ class WebDriverRun:
                     selindex = self.globalVariable[value[2][1]]
                 else:
                     selindex = value[2][1]
-                if selindex.isdigit():
+                if str(selindex).isdigit():
                     self.globalVariables(value[0], self.globalVariable[value[2][0]][int(selindex)])
                 else:
                     self.globalVariables(value[0], self.globalVariable[value[2][0]][selindex])
