@@ -8,6 +8,7 @@ import base64
 import urllib.parse
 import requests
 
+from utils.config import FileDate
 
 # jenkins登录地址
 jenkins_url = "http://18.222.127.214:8989/job/"
@@ -31,7 +32,7 @@ report_url = job_last_build_url + 'allure' #'allure'为我的Jenkins全局工具
 def DingTalkSend():
     d = {}
     # 获取项目绝对路径
-    path = os.path.abspath(os.path.dirname((__file__)))
+    path = FileDate().osFilePath()
     # 打开prometheusData 获取需要发送的信息
     f = open(path + r'/allure-report/export/prometheusData.txt', 'r')
     for lines in f:
