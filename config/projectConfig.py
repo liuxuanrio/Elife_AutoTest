@@ -8,7 +8,7 @@ class ProjectConfig:
         :return:
         """
         config = {
-            "driver_app": {"caseName": "driver_app_ui_testcase.xlsx", "runType": "driver_app_Ride_More1.mqt",
+            "driver_app": {"caseName": "driver_app_ui_testcase.xlsx", "runType": "driver_app_employee_emailLogin.mqt",
                            "testData": "/data/test_case_file/driver_app/", "testCase": "/test/case/driver_app_case/"}
         }
         return config
