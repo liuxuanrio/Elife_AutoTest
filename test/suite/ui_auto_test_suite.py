@@ -225,6 +225,6 @@ class OpenFile():
 if __name__ == "__main__":
     pass
     caseutc = TimeMethod().intNewTimeUtc()
-    case = AutoFile().openFile("driver_app_Ride_Accept.mqt", caseutc)
+    case = AutoFile().openFile("driver_app_update_password.mqt", caseutc)
     # print(case)
     # case = print(OpenFile().testFileCase())
