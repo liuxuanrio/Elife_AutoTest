@@ -116,17 +116,8 @@ class WebDriverRun:
             option.add_argument('no-sandbox')
             # 大量渲染时候写入/tmp而非/dev/shm
             option.add_argument('disable-dev-shm-usage')
-            # 设置语言为中文
-            option.add_argument('lang=zh_CN.UTF-8')
-            # 设置浏览器权限
-            option.add_experimental_option("prefs", {
-                "profile.default_content_setting_values.media_stream_mic": 1,  # 麦克风 1:allow, 2:block
-                "profile.default_content_setting_values.media_stream_camera": 1,  # 摄像头 1:allow, 2:block
-                "profile.default_content_setting_values.geolocation": 1,  # 地理位置 1:allow, 2:block
-                "profile.default_content_setting_values.notifications": 1,  # 通知 1:allow, 2:block
-                "profile.default_content_settings.geolocation": 1,
-                "profile.default_content_settings.popups": 0
-            })
+            option.add_argument('--disable-gpu')
+
             self.chrlist[self.chrindex] = webdriver.Chrome(options=option)
             self.chrlist[self.chrindex].execute_script("""navigator.geolocation.getCurrentPosition = function(success, failure) { 
                   success({ 
