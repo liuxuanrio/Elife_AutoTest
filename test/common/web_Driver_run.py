@@ -202,9 +202,13 @@ class WebDriverRun:
         # 把获取的值保存到全局参数self.globalVariable
         self.chrIndex(value[2][0])
         try:
-            self.globalVariables(value[0], self.chrlist[self.chrindex].find_element(By.XPATH, value[2][2]).\
-                get_attribute('innerText'))
-            self.logs(f"获取元素成功：{value[0]}={self.globalVariable[value[0]]}")
+            if value[2][-1] == "value":
+                self.globalVariables(value[0], self.chrlist[self.chrindex].find_element(By.XPATH, value[2][2]).get_attribute('value'))
+                self.logs(f"获取元素成功：{value[0]}={self.globalVariable[value[0]]}")
+            else:
+                self.globalVariables(value[0], self.chrlist[self.chrindex].find_element(By.XPATH, value[2][2]).\
+                    get_attribute('innerText'))
+                self.logs(f"获取元素成功：{value[0]}={self.globalVariable[value[0]]}")
         except:
             try:
                 self.globalVariables(value[0], self.chrlist[self.chrindex].find_element(By.XPATH, value[2][2]).text)
@@ -232,7 +236,7 @@ class WebDriverRun:
             sqlvalue = self.strValue(value[2][1][2])
         else:
             sqlvalue = self.strValue(sqlvalue)
-        if "select" in sqlvalue or "SELECT" in sqlvalue:  # 查询sql
+        if ("select" in sqlvalue or "SELECT" in sqlvalue) and ("update" not in sqlvalue or "delete" not in sqlvalue):
             valuelist = MYSQL_starter_test().ExecQuery(sqlvalue)
             retlist = []
             for i in valuelist:  # 循环读取list，替换日期格式为str
@@ -251,7 +255,7 @@ class WebDriverRun:
         else:
             sqlvalue = value[1][1]
         self.logs(sqlvalue)
-        ret = MYSQL_starter_test().ExecNonQuery(sqlvalue)
+        ret = MYSQL_starter_test().ExecNonQuery(sqlvalue.strip())
         self.logs(ret)
 
     # 分派指令

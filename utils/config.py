@@ -141,7 +141,9 @@ class FileDate:
 
 if __name__ == "__main__":
     pass
-    print(DataType().updateStrMake('"//*[@id=\\"index_rides_mgmt\\"]//*[@id=\\"finished-top-title\\"]"'))
+    # print(DataType().updateStrMake('"//*[@id=\\"index_rides_mgmt\\"]//*[@id=\\"finished-top-title\\"]"'))
     # FileDate().osFilePathList("test.mqt_1683712400")
+    sql = "update ride.ride set from_utc = (select unix_timestamp((SELECT date_format(DATE_ADD(NOW(), INTERVAL '241' MINUTE), '%Y-%m-%d %H:%i') FROM DUAL))), from_time_str = (SELECT date_format(DATE_ADD(NOW(), INTERVAL '721' MINUTE), '%Y-%m-%d %H:%i') FROM DUAL)  where id =127108;"
+    MYSQL_starter_test().ExecNonQuery(sql)
 
     # data = TimeMethod().intNewTimeUtc()

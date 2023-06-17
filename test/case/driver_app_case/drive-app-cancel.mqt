@@ -166,7 +166,7 @@ sequence
   (
     @chr
     "xpath"
-    "//*[@id=\"rides-list\"]/div[2]//*[@id=\"rides-list-row-0\"]"
+    "//*[@id=\"index_rides_mgmt\"]//*[@id=\"rides-list\"]/div[2]//*[@id=\"rides-list-row-0\"]/div/div[2]"
     100
     3
     0
@@ -216,7 +216,9 @@ sequence
       @db
       str
       (
-        "update ride.dispatch set stat = '134217736',trip_no_x = null,reversal = 1.00 where to_fleet_id = '11854' and ride_id = 127109"
+        "update ride.dispatch set stat = '134217736',trip_no_x = null,reversal = 1.00 where to_fleet_id = '11854' and ride_id = '"
+        @ride1
+        "';"
       )
     )
   )
@@ -308,7 +310,7 @@ sequence
   (
     @chr
     "xpath"
-    "//*[@id=\"rides-list\"]/div[2]//*[@id=\"rides-list-row-0\"]"
+    "//*[@id=\"index_rides_mgmt\"]//*[@id=\"rides-list\"]/div[2]//*[@id=\"rides-list-row-0\"]/div/div[2]"
     100
     3
     0
@@ -340,7 +342,7 @@ sequence
   (
     @chr
     "xpath"
-    "//*[@id=\"rides-list\"]/div[2]//*[@id=\"rides-list-row-0\"]"
+    "//*[@id=\"index_rides_mgmt\"]//*[@id=\"rides-list\"]/div[2]//*[@id=\"rides-list-row-0\"]/div/div[2]"
     100
     3
     0
@@ -400,7 +402,11 @@ sequence
       @db
       str
       (
-        "update ride.ride set from_utc = (select unix_timestamp((SELECT date_format(DATE_ADD(NOW(), INTERVAL '241' MINUTE), '%Y-%m-%d %H:%i') FROM DUAL))), from_time_str = (SELECT date_format(DATE_ADD(NOW(), INTERVAL '721' MINUTE), '%Y-%m-%d %H:%i') FROM DUAL)  where id = 127108"
+        "update ride.ride set from_utc = (select unix_timestamp("
+(SELECT date_format(DATE_ADD(NOW(), INTERVAL '241' MINUTE), '%Y-%m-%d %H:%i') FROM DUAL)
+)), from_time_str = (SELECT date_format(DATE_ADD(NOW(), INTERVAL '721' MINUTE), '%Y-%m-%d %H:%i') FROM DUAL)  where id =
+        @ride2
+        ';'
       )
     )
   )
@@ -411,7 +417,10 @@ sequence
       @db
       str
       (
-        "update ride.dispatch set from_utc = (select unix_timestamp((SELECT date_format(DATE_ADD(NOW(), INTERVAL '241' MINUTE), '%Y-%m-%d %H:%i') FROM DUAL))) where ride_id = 127108"
+        "update ride.dispatch set from_utc = (select unix_timestamp("
+(SELECT date_format(DATE_ADD(NOW(), INTERVAL '241' MINUTE), '%Y-%m-%d %H:%i') FROM DUAL))) where ride_id =
+        @ride2
+        ';'
       )
     )
   )
@@ -457,7 +466,7 @@ sequence
   (
     @chr
     "xpath"
-    "//*[@id=\"rides-list\"]/div[2]//*[@id=\"rides-list-row-0\"]"
+    "//*[@id=\"index_rides_mgmt\"]//*[@id=\"rides-list\"]/div[2]//*[@id=\"rides-list-row-0\"]/div/div[2]"
     100
     3
     0
@@ -476,7 +485,9 @@ sequence
       @db
       str
       (
-        "update ride.dispatch set stat = '134217736',trip_no_x = null,reversal = 1.00 where to_fleet_id = '11854' and ride_id = 127108"
+        "update ride.dispatch set stat = '134217736',trip_no_x = null,reversal = 1.00 where to_fleet_id = '11854' and ride_id = '"
+        @ride2
+        "';"
       )
     )
   )
@@ -506,7 +517,11 @@ sequence
         @db
         str
         (
-          "SELECT TIMESTAMPDIFF(Second, '"@nowtime"',  '"@time2":00');"
+          "SELECT TIMESTAMPDIFF(Second, '"
+          @nowtime
+          "', '"
+          @time2
+          ":00');"
         )
       )
     )
@@ -538,6 +553,12 @@ sequence
       0
       0
     )
+  )
+  sleep
+  (
+    6
+    0
+    0
   )
   assign
   (
@@ -605,7 +626,7 @@ sequence
   (
     @chr
     "xpath"
-    "//*[@id=\"rides-list\"]/div[2]//*[@id=\"rides-list-row-0\"]"
+    "//*[@id=\"index_rides_mgmt\"]//*[@id=\"rides-list\"]/div[2]//*[@id=\"rides-list-row-0\"]/div/div[2]"
     100
     3
     0
@@ -742,7 +763,9 @@ sequence
       @db
       str
       (
-        "update ride.dispatch set stat = '134217736',trip_no_x = null,reversal = 1.00 where to_fleet_id = '11854' and ride_id = 127006"
+        "update ride.dispatch set stat = '134217736',trip_no_x = null,reversal = 1.00 where to_fleet_id = '11854' and ride_id = '"
+        @ride3
+        "';"
       )
     )
   )
@@ -849,7 +872,7 @@ sequence
   (
     @chr
     "xpath"
-    "//*[@id=\"pay-link-cpy-close-btn\"]"
+    "//*[@id=\"container-fluid\"]//*[@id=\"pay-link-cpy-close-btn\"]"
     100
     3
     0
@@ -885,7 +908,7 @@ sequence
   (
     @chr
     "xpath"
-    "//*[@id=\"rides-list\"]/div[2]//*[@id=\"rides-list-row-0\"]"
+    "//*[@id=\"index_rides_mgmt\"]//*[@id=\"rides-list\"]/div[2]//*[@id=\"rides-list-row-0\"]/div/div[2]"
     100
     3
     0
@@ -952,7 +975,7 @@ sequence
     (
       @chr
       "xpath"
-      "//*[@id=\"pay-link-fld\"]"
+      "//*[@id=\"container-fluid\"]//*[@id=\"pay-link-fld\"]"
       100
       3
       "value"
@@ -1035,7 +1058,11 @@ sequence
       @db
       str
       (
-        "update ride.ride set from_utc = (select unix_timestamp((SELECT date_format(DATE_ADD(NOW(), INTERVAL '241' MINUTE), '%Y-%m-%d %H:%i') FROM DUAL))), from_time_str = (SELECT date_format(DATE_ADD(NOW(), INTERVAL '721' MINUTE), '%Y-%m-%d %H:%i') FROM DUAL)  where id = 127107"
+        "update ride.ride set from_utc = (select unix_timestamp("
+(SELECT date_format(DATE_ADD(NOW(), INTERVAL '241' MINUTE), '%Y-%m-%d %H:%i') FROM DUAL)
+)), from_time_str = (SELECT date_format(DATE_ADD(NOW(), INTERVAL '721' MINUTE), '%Y-%m-%d %H:%i') FROM DUAL)  where id =
+        @ride4
+        ';'
       )
     )
   )
@@ -1046,7 +1073,10 @@ sequence
       @db
       str
       (
-        "update ride.dispatch set from_utc = (select unix_timestamp((SELECT date_format(DATE_ADD(NOW(), INTERVAL '241' MINUTE), '%Y-%m-%d %H:%i') FROM DUAL))) where ride_id = 127007"
+        "update ride.dispatch set from_utc = (select unix_timestamp("
+(SELECT date_format(DATE_ADD(NOW(), INTERVAL '241' MINUTE), '%Y-%m-%d %H:%i') FROM DUAL))) where ride_id =
+        @ride4
+        ';'
       )
     )
   )
@@ -1058,7 +1088,7 @@ sequence
       streamDbSql
       (
         @db
-        "SELECT date_format(DATE_ADD(NOW(), INTERVAL '482' MINUTE), '%Y-%m-%d %H:%i') FROM DUAL;"
+        "SELECT date_format(DATE_ADD(NOW(), INTERVAL '481' MINUTE), '%Y-%m-%d %H:%i') FROM DUAL;"
       )
     )
   )
@@ -1095,7 +1125,9 @@ sequence
       @db
       str
       (
-        "update ride.dispatch set stat = '134217736',trip_no_x = null,reversal = 1.00 where to_fleet_id = '11854' and ride_id = 127007"
+        "update ride.dispatch set stat = '134217736',trip_no_x = null,reversal = 1.00 where to_fleet_id = '11854' and ride_id = '"
+        @ride4
+        "';"
       )
     )
   )
@@ -1127,10 +1159,9 @@ sequence
         (
           "SELECT TIMESTAMPDIFF(Second, '"
           @nowtime
-          "',  '"
+          "', '"
           @time4
-          ":00');
-"
+          ":00');"
         )
       )
     )
@@ -1162,6 +1193,12 @@ sequence
       0
       0
     )
+  )
+  sleep
+  (
+    6
+    0
+    0
   )
   assign
   (
