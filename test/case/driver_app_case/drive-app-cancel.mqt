@@ -233,27 +233,84 @@ sequence
     1
   )
   sleep
-  (
-    6
-    0
-    0
-  )
-  webPageElementClick
-  (
-    @chr
-    "xpath"
-    "//*[@id=\"dispatch_detail\"]//*[@id=\"confirm-start\"]"
-    100
-    3
-    0
-    1
-  )
-  sleep
-  (
-    3
-    0
-    0
-  )
+    (
+      2
+      0
+      0
+    )
+    webPageElementClick
+    ^ 点击Done按钮关闭gps弹框
+    (
+      @chr
+      "xpath"
+      "//*[@id=\"dispatch_detail\"]//*[@id=\"gps-tutorial-finish\"]"
+      100
+      3
+      0
+      1
+    )
+    webPageElementClick
+    ^ 点击On my way按钮
+    (
+      @chr
+      "xpath"
+      "//*[@id=\"dispatch_detail\"]//*[@id=\"on-my-way\"]"
+      100
+      3
+      0
+      1
+    )
+    sleep
+    (
+      2
+      0
+      0
+    )
+    webPageElementClick
+    ^ 点击Done按钮关闭gps弹框
+    (
+      @chr
+      "xpath"
+      "//*[@id=\"dispatch_detail\"]//*[@id=\"second-gps-tutorial-finish\"]"
+      100
+      3
+      0
+      1
+    )
+    webPageElementClick
+    ^ 点击On my way按钮
+    (
+      @chr
+      "xpath"
+      "//*[@id=\"dispatch_detail\"]//*[@id=\"on-my-way\"]"
+      100
+      3
+      0
+      1
+    )
+    sleep
+    (
+      3
+      0
+      0
+    )
+    webPageElementClick
+    ^ 点击YES按钮
+    (
+      @chr
+      "xpath"
+      "//*[@id=\"dispatch_detail\"]//*[@id=\"start-track-modal\"]//*[@id=\"confirm-start\"]"
+      100
+      3
+      0
+      1
+    )
+    sleep
+    (
+      5
+      0
+      0
+    )
   assign
   (
     @ifpopup1
@@ -780,27 +837,84 @@ sequence
     1
   )
   sleep
-  (
-    3
-    0
-    0
-  )
-  webPageElementClick
-  (
-    @chr1
-    "xpath"
-    "//*[@id=\"confirm-start\"]"
-    100
-    3
-    0
-    1
-  )
-  sleep
-  (
-    3
-    0
-    0
-  )
+    (
+      2
+      0
+      0
+    )
+    webPageElementClick
+    ^ 点击Done按钮关闭gps弹框
+    (
+      @chr
+      "xpath"
+      "//*[@id=\"dispatch_detail\"]//*[@id=\"gps-tutorial-finish\"]"
+      100
+      3
+      0
+      1
+    )
+    webPageElementClick
+    ^ 点击On my way按钮
+    (
+      @chr
+      "xpath"
+      "//*[@id=\"dispatch_detail\"]//*[@id=\"on-my-way\"]"
+      100
+      3
+      0
+      1
+    )
+    sleep
+    (
+      2
+      0
+      0
+    )
+    webPageElementClick
+    ^ 点击Done按钮关闭gps弹框
+    (
+      @chr
+      "xpath"
+      "//*[@id=\"dispatch_detail\"]//*[@id=\"second-gps-tutorial-finish\"]"
+      100
+      3
+      0
+      1
+    )
+    webPageElementClick
+    ^ 点击On my way按钮
+    (
+      @chr
+      "xpath"
+      "//*[@id=\"dispatch_detail\"]//*[@id=\"on-my-way\"]"
+      100
+      3
+      0
+      1
+    )
+    sleep
+    (
+      3
+      0
+      0
+    )
+    webPageElementClick
+    ^ 点击YES按钮
+    (
+      @chr
+      "xpath"
+      "//*[@id=\"dispatch_detail\"]//*[@id=\"start-track-modal\"]//*[@id=\"confirm-start\"]"
+      100
+      3
+      0
+      1
+    )
+    sleep
+    (
+      5
+      0
+      0
+    )
   assign
   (
     @ifpopup3
