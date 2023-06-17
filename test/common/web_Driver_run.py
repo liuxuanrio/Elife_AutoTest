@@ -144,8 +144,15 @@ class WebDriverRun:
 
     # 点击元素
     def webPageElementClick(self, xpath):
-        time.sleep(1)
-        self.chrlist[self.chrindex].find_element(By.XPATH, xpath).click()
+        if "photo-upload-modal" in xpath:
+            self.photoUpload(xpath)
+        else:
+            time.sleep(1)
+            self.chrlist[self.chrindex].find_element(By.XPATH, xpath).click()
+
+    # 上传图片
+    def photoUpload(self, xpath):
+        self.chrlist[self.chrindex].find_element(By.XPATH, xpath).send_keys(f"{self.testData}test.jpg")
 
     # 输入信息
     def webPageElementInput(self, xpath, value):
