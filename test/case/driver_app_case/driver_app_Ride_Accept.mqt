@@ -282,6 +282,14 @@ sequence
     streamDbSql
     (
       @db
+      "update ride.auction_ride set trip_no_x = 0 where auction_id in (select auction_id from ride.auction_fleet where auction_id in (3811,3812,3813));"
+    )
+  )
+  tableStream
+  (
+    streamDbSql
+    (
+      @db
       "update ride.auction_ride set trip_no_x = 1 where auction_id in (select auction_id from ride.auction_fleet where fleet_id = '11466' and auction_id = '3814');"
     )
   )
