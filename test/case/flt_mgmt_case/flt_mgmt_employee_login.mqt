@@ -400,7 +400,7 @@ sequence
     (
       str
       (
-        "1.  FALSE   "
+        "1.  PASS   "
         @iftime1
         "!="
         @iftime2
@@ -436,7 +436,7 @@ sequence
     (
       str
       (
-        "2.  FALSE   "
+        "2.  PASS   "
         @notes
         "!="
         @loginnote

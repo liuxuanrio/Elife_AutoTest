@@ -11,19 +11,6 @@ import requests
 from test.suite.ui_auto_test_suite import OpenFile
 from utils.config import FileDate
 
-# jenkins登录地址
-jenkins_url = "http://18.222.127.214:8989/job/"
-# 获取jenkins对象
-server = jenkins.Jenkins(jenkins_url) #Jenkins登录名 ，密码
-# job名称
-job_name = "Elife_UI_AutoTest" #Jenkins运行任务名称
-# job的url地址
-job_url = jenkins_url + job_name
-# 获取最后一次构建
-job_last_build_url = server.get_info(job_name)['lastBuild']['url']
-# 报告地址
-report_url = job_last_build_url + 'allure' #'allure'为我的Jenkins全局工具配置中allure别名
-
 '''
 钉钉推送方法：
 读取report文件中"prometheusData.txt"，循环遍历获取需要的值。
@@ -36,7 +23,20 @@ def DingTalkSend():
     path = FileDate().osFilePath()
 
     # 获取当前运行项目信息
-    OpenFile().runConfig(path)
+    jobInfo = OpenFile().runConfig(path)
+
+    # jenkins登录地址
+    jenkins_url = "http://18.222.127.214:8989/job/"
+    # 获取jenkins对象
+    server = jenkins.Jenkins(jenkins_url)  # Jenkins登录名 ，密码
+    # job名称
+    job_name = jobInfo["jobName"]  # Jenkins运行任务名称
+    # job的url地址
+    job_url = jenkins_url + job_name
+    # 获取最后一次构建
+    job_last_build_url = server.get_info(job_name)['lastBuild']['url']
+    # 报告地址
+    report_url = job_last_build_url + 'allure'  # 'allure'为我的Jenkins全局工具配置中allure别名
 
     # 打开prometheusData 获取需要发送的信息
     f = open(path + r'/allure-report/export/prometheusData.txt', 'r')
@@ -75,7 +75,7 @@ def DingTalkSend():
     #钉钉消息格式，其中 content 就是我们要发送的具体内容
     con = {"msgtype": "text",
            "text": {
-               "content": "driver app UI自动化脚本执行完成:"
+               "content": f"{jobInfo['title']}"
                           "\n测试概述:"
                           "\n运行总数:" + retries_run +
                           "\n通过数量:" + status_passed +
