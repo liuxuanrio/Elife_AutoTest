@@ -202,22 +202,22 @@ class OpenFile():
         # 判断当前项目运行环境
         if "jenkins_home" in path:
             if "Elife_UI_AutoTest" in path:
-                fileName = fileConfig["driver_app"]["caseName"]
-                runType = fileConfig["driver_app"]["runType"]
-                testData = f'{path}{fileConfig["driver_app"]["testData"]}'
-                testCase = f'{path}{fileConfig["driver_app"]["testCase"]}'
+                keys = "driver_app"
+            elif "Flt_mgmt_UI_AutoTest" in path:
+                keys = "flt_mgmt"
             else:
-                fileName = fileConfig["driver_app"]["caseName"]
-                runType = fileConfig["driver_app"]["runType"]
-                testData = f'{path}{fileConfig["driver_app"]["testData"]}'
-                testCase = f'{path}{fileConfig["driver_app"]["testCase"]}'
+                keys = "driver_app"
         else:  # 本地调试可手动修改需要执行的文件
-            fileName = fileConfig["driver_app"]["caseName"]
-            runType = fileConfig["driver_app"]["runType"]
-            testData = f'{path}{fileConfig["driver_app"]["testData"]}'
-            testCase = f'{path}{fileConfig["driver_app"]["testCase"]}'
+            keys = "driver_app"
+        fileName = fileConfig[keys]["caseName"]
+        runType = fileConfig[keys]["runType"]
+        testData = f'{path}{fileConfig[keys]["testData"]}'
+        testCase = f'{path}{fileConfig[keys]["testCase"]}'
+        jobName = fileConfig[keys]["jobName"]
+        title = fileConfig[keys]["title"]
         configData = {"fileName": fileName, "runType": runType,
-                      "testData": testData, "testCase": testCase}
+                      "testData": testData, "testCase": testCase,
+                      "jobName": jobName, "title": title}
         return configData
 
 

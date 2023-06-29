@@ -8,6 +8,7 @@ import base64
 import urllib.parse
 import requests
 
+from test.suite.ui_auto_test_suite import OpenFile
 from utils.config import FileDate
 
 # jenkins登录地址
@@ -33,6 +34,10 @@ def DingTalkSend():
     d = {}
     # 获取项目绝对路径
     path = FileDate().osFilePath()
+
+    # 获取当前运行项目信息
+    OpenFile().runConfig(path)
+
     # 打开prometheusData 获取需要发送的信息
     f = open(path + r'/allure-report/export/prometheusData.txt', 'r')
     for lines in f:
@@ -70,7 +75,7 @@ def DingTalkSend():
     #钉钉消息格式，其中 content 就是我们要发送的具体内容
     con = {"msgtype": "text",
            "text": {
-               "content": "driver app UI自动化脚本执行完成。"
+               "content": "driver app UI自动化脚本执行完成:"
                           "\n测试概述:"
                           "\n运行总数:" + retries_run +
                           "\n通过数量:" + status_passed +
