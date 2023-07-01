@@ -96,7 +96,7 @@ sequence
     streamDbSql
     (
       @db
-      "update ride.dispatch set stat = '134217730',trip_no_x = trip_no where to_fleet_id = '12774' and stat != '134217736';"
+      "update ride.dispatch set stat = '134217730',trip_no_x = trip_no where to_fleet_id = '12774' and stat != '134217736' and ride_id in (135908);"
     )
   )
   tableStream
@@ -105,16 +105,7 @@ sequence
     streamDbSql
     (
       @db
-      "delete from ride.complaint where ride_id in (select ride_id from ride.dispatch where to_fleet_id = '12774');"
-    )
-  )
-  tableStream
-  ^ 删除订单note_ride记录
-  (
-    streamDbSql
-    (
-      @db
-      "delete from ride.note_ride where ride_id in (136186,136007,136008) and note_type = 136118281;"
+      "delete from ride.complaint where ride_id in (select ride_id from ride.dispatch where to_fleet_id = '12774' and ride_id in (135908));"
     )
   )
   webPageElementClick
@@ -172,7 +163,7 @@ sequence
     @CaseFile
     fileReadOpen
     (
-      "/Users/liuliuxuan/Documents/elifeautotest/api_test_case/more.csv"
+      "/Users/liuliuxuan/Documents/elifeautotest/api_test_case/more_By_day.csv"
     )
   )
   loopStream
@@ -667,7 +658,7 @@ sequence
     (
       @chr
       "xpath"
-      "//*[@id=\"index_rides_mgmt\"]//*[@id=\"rides-list\"]/div[2]//*[@id=\"rides-list-row-0\"]/div/div[2]"
+      "//*[@id=\"index_rides_mgmt\"]//*[@id=\"rides-list\"]/div[2]//*[@id=\"rides-list-row-1\"]/div/div[2]"
       100
       3
       0
@@ -1238,7 +1229,7 @@ sequence
     (
       @chr
       "xpath"
-      "//*[@id=\"index_rides_mgmt\"]//*[@id=\"rides-list\"]/div[2]//*[@id=\"rides-list-row-0\"]/div/div[2]"
+      "//*[@id=\"index_rides_mgmt\"]//*[@id=\"rides-list\"]/div[2]//*[@id=\"rides-list-row-1\"]/div/div[2]"
       100
       3
       0
@@ -1797,7 +1788,7 @@ sequence
     (
       @chr
       "xpath"
-      "//*[@id=\"index_rides_mgmt\"]//*[@id=\"rides-list-past-row-0\"]/div/div[2]"
+      "//*[@id=\"index_rides_mgmt\"]//*[@id=\"rides-list-past-row-1\"]/div/div[2]"
       100
       3
       0
@@ -2168,7 +2159,7 @@ sequence
       (
         @chr
         "xpath"
-        "//*[@id=\"index_rides_mgmt\"]//*[@id=\"rides-list-past-row-0\"]/div/div[1]/div[2]"
+        "//*[@id=\"index_rides_mgmt\"]//*[@id=\"rides-list-past-row-1\"]/div/div[1]/div[2]"
         100
         3
         "innerHTML"
@@ -2514,7 +2505,7 @@ sequence
       equal
       (
         @rideStatList
-        "Unable to provide service,Customer no show,At destination"
+        "At destination,At destination,Customer no show"
       )
       print
       (
@@ -2529,7 +2520,7 @@ sequence
           @ride3
           ", "
           @rideStatList
-          "==Unable to provide service,Customer no show,At destination"
+          "==At destination,At destination,Customer no show"
         )
       )
     )
@@ -2548,7 +2539,7 @@ sequence
           @ride3
           ", "
           @rideStatList
-          "!=Unable to provide service,Customer no show,At destination"
+          "!=At destination,At destination,Customer no show"
         )
       )
     )

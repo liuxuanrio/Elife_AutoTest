@@ -44,10 +44,7 @@ class WebDriverRun:
 
     def iselement(self, xpath):
         """
-        基本实现判断元素是否存在
-        :param browser: 浏览器对象
-        :param xpaths: xpaths表达式
-        :return: 是否存在
+        判断元素是否存在
         """
         try:
             self.chrlist[self.chrindex].find_element(By.XPATH, xpath)
@@ -55,11 +52,12 @@ class WebDriverRun:
         except exceptions.NoSuchElementException:
             return False
 
-    # seleium 点击，输入，获取文本操作方法需要运行的步骤(获取当前运行的浏览器，校验xpath是否存在)
+    """
+    seleium 点击，输入，获取文本操作
+    """
     def webPageif(self, value, type):
         """
-        :param type: 1 Click  2 Input  3 Value
-        :return:
+        type: 1 Click  2 Input  3 Value
         """
         # 获取当前运行的浏览器
         if type == 3:

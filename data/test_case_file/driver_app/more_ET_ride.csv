@@ -1,0 +1,2 @@
+CaseTitle,ride1,ride2,ride3,assert1,assert2,assert3,assert4,assert5
+1.By day Ride,136034,136034,136038,"Accept more:true,Book return trip:true,Unable to provide service:false,TripTitle:false","Customer no show more:true,Book return trip:true,Customer no show:true,NoShowTitle:true","At destination more:true,Book return trip:true,Leave message:true,TripTitle:true","Past Customer no show more:true,Book return trip:true,Customer no show:true,NoShowTitle:true","Past At destination more:true,Book return trip:true,Leave message:true,TripTitle:true"
