@@ -163,7 +163,7 @@ sequence
     @CaseFile
     fileReadOpen
     (
-      "/Users/liuliuxuan/Documents/elifeautotest/api_test_case/more.csv"
+      "/Users/liuliuxuan/Documents/elifeautotest/api_test_case/more_One_way.csv"
     )
   )
   loopStream
@@ -544,6 +544,17 @@ sequence
           12
           0
           0
+        )
+      )
+      else
+      (
+        assign
+        (
+          @DriverDisplayed
+          valueOf
+          (
+            "false"
+          )
         )
       )
       assign
@@ -943,7 +954,7 @@ sequence
         )
         sleep
         (
-          2
+          5
           0
           0
         )
@@ -1961,7 +1972,7 @@ sequence
         )
         sleep
         (
-          2
+          5
           0
           0
         )
