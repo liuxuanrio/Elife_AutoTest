@@ -26,6 +26,10 @@ class Test_sign_in:
         with allure.step("执行日志"):
             allure.attach(msg[0])
 
+        # 保存用例中的变量信息
+        with allure.step("variable"):
+            allure.attach(msg[2], 'Json数据', allure.attachment_type.JSON)
+
         with allure.step("截图"):
             # 获取当前用例生成的截图
             attachList = FileDate().osFilePathList(caseTitle + "_" + caseutc)

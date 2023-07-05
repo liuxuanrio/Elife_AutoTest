@@ -79,7 +79,7 @@ class AutoFile(WebDriverRun):
         # 关闭开启的浏览器
         self.webquit(picturePath, caseutc)
 
-        return runlogData, assertint
+        return runlogData, assertint, self.globalVariable
 
     # 处理list中嵌套方法
     def for_list(self, filelist):
