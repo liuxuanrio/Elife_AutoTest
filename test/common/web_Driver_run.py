@@ -464,7 +464,8 @@ class WebDriverRun:
         elif key == "if":
             self.ifelse(value)
         elif key == "elseIf":
-            self.ifelse(value)
+            if self.ifstat == 1:
+                self.ifelse(value)
         elif key == "else":
             if self.ifstat == 1:
                 self.ifForRun(value)
