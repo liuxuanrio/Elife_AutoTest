@@ -71,6 +71,7 @@ class WebDriverRun:
         # 重试次数
         for i in range(3):
             try:
+                xpath = self.strValue(xpath)
                 if self.iselement(xpath):
                     if type == 1:
                         self.webPageElementClick(xpath)
@@ -142,7 +143,7 @@ class WebDriverRun:
 
     # 点击元素
     def webPageElementClick(self, xpath):
-        if "photo-upload-modal" in xpath:
+        if "photo-upload-modal" in xpath and "select-from-album" in xpath:
             self.photoUpload(xpath)
         else:
             time.sleep(1)
@@ -160,7 +161,10 @@ class WebDriverRun:
             values = self.strValue(value[5])
 
         # 清除输入框内容
-        self.chrlist[self.chrindex].find_element(By.XPATH, xpath).clear()
+        try:
+            self.chrlist[self.chrindex].find_element(By.XPATH, xpath).clear()
+        except:
+            pass
         if "ride-id-search-fld" in xpath:
             self.chrlist[self.chrindex].find_element(By.XPATH, xpath).send_keys(f"{values}\n")
         else:
@@ -292,7 +296,11 @@ class WebDriverRun:
             if value[2][0] == "str":
                 self.globalVariables(value[0], self.strValue(value[2][1])[int(value[2][-2]):int(value[2][-1])])
             elif value[2][0] in self.globalVariable.keys():
-                self.globalVariables(value[0], self.globalVariable[value[2][0]][int(value[2][1]):int(value[2][2])])
+                indexValue = int(value[2][1]) + int(value[2][2])
+                lenValue = len(self.globalVariable[value[2][0]])
+                if indexValue > lenValue:
+                    indexValue = lenValue
+                self.globalVariables(value[0], self.globalVariable[value[2][0]][int(value[2][1]):indexValue])
             else:
                 self.globalVariables(value[0], "")
 
@@ -455,7 +463,7 @@ class WebDriverRun:
             self.tableStream(value)
         elif key == "if":
             self.ifelse(value)
-        elif key == "elif":
+        elif key == "elseIf":
             self.ifelse(value)
         elif key == "else":
             if self.ifstat == 1:
