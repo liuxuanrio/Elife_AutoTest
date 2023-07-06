@@ -1,3 +1,4 @@
+import json
 import os
 import pytest
 import allure
@@ -28,7 +29,7 @@ class Test_sign_in:
 
         # 保存用例中的变量信息
         with allure.step("variable"):
-            allure.attach(msg[2], 'Json数据', allure.attachment_type.JSON)
+            allure.attach(json.dumps(msg[2]), 'Json数据', allure.attachment_type.JSON)
 
         with allure.step("截图"):
             # 获取当前用例生成的截图
@@ -62,6 +63,10 @@ class Test_Available:
         with allure.step("执行日志"):
             allure.attach(msg[0])
 
+        # 保存用例中的变量信息
+        with allure.step("variable"):
+            allure.attach(json.dumps(msg[2]), 'Json数据', allure.attachment_type.JSON)
+
         with allure.step("截图"):
             # 获取当前用例生成的截图
             attachList = FileDate().osFilePathList(caseTitle + "_" + caseutc)
@@ -93,6 +98,10 @@ class Test_Booked:
         # 保存执行日志
         with allure.step("执行日志"):
             allure.attach(msg[0])
+
+        # 保存用例中的变量信息
+        with allure.step("variable"):
+            allure.attach(json.dumps(msg[2]), 'Json数据', allure.attachment_type.JSON)
 
         with allure.step("截图"):
             # 获取当前用例生成的截图
