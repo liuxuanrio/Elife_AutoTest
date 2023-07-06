@@ -29,7 +29,7 @@ class Test_merchants_go:
 
         # 保存用例中的变量信息
         with allure.step("variable"):
-            allure.attach(msg[2], 'Json数据', allure.attachment_type.JSON)
+            allure.attach(msg[2].json(), 'Json数据', allure.attachment_type.JSON)
 
         with allure.step("截图"):
             # 获取当前用例生成的截图

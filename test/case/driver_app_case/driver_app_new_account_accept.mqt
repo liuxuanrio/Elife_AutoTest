@@ -1382,180 +1382,229 @@ sequence
           )
         )
       )
-      webPageElementClick
-      (
-        @chr
-        "xpath"
-        "//*[@id=\"stil-audit-confirm-btn\"]"
-        100
-        3
-        0
-        1
-      )
-      webPageElementClick
-      (
-        @chr
-        "xpath"
-        "//*[@id=\"bid-rides-list\"]/div[3]//*[@id=\"out-bid-btn\"]"
-        100
-        3
-        0
-        1
-      )
-      sleep
-      (
-        5
-        0
-        0
-      )
-      webPageElementClick
-      (
-        @chr
-        "xpath"
-        "//*[@id=\"stil_audit_modal\"]/div/div[1]"
-        100
-        3
-        0
-        1
-      )
-      tableStream
-      ^ 修改审核状态
-      (
-        streamDbSql
-        (
-          @db
-          str
-          (
-            "update ride.fleet set unverified = 0 where name = '"
-            @CountryCode
-            @usercode
-            "' and radius is null;"
-          )
-        )
-      )
-      webBrowserPage
-      (
-        @chr
-        @driverpath
-      )
-      sleep
-      (
-        8
-        0
-        0
-      )
-      webPageElementClick
-      (
-        @chr
-        "xpath"
-        "//*[@id=\"bid-rides-list\"]/div[3]//*[@id=\"out-bid-btn\"]"
-        100
-        3
-        0
-        1
-      )
-      sleep
-      (
-        3
-        0
-        0
-      )
-      webPageElementClick
-      (
-        @chr
-        "xpath"
-        "//*[@id=\"bid-rides-list\"]/div[3]//*[@id=\"bid-rides-list-row-0\"]/div[2]/div[1]"
-        100
-        3
-        0
-        1
-      )
-      sleep
-      (
-        2
-        0
-        0
-      )
-      webPageElementClick
-      (
-        @chr
-        "xpath"
-        "//*[@id=\"detail-back\"]"
-        100
-        3
-        0
-        1
-      )
-      sleep
-      (
-        2
-        0
-        0
-      )
-      webPageElementClick
-      (
-        @chr
-        "xpath"
-        "//*[@id=\"orders-booked-act\"]"
-        100
-        3
-        0
-        1
-      )
-      sleep
-      (
-        5
-        0
-        0
-      )
       assign
       (
-        @ridestr
-        webElementValue
+        @ReviewContinueJson
+        webElementInfo
         (
           @chr
           "xpath"
-          "//*[@id=\"rides-list\"]/div[2]//*[@id=\"rides-list-row-0\"]/div/div[1]/div[1]/span"
+          "//*[@id=\"stil-audit-title\"]"
           100
           3
-          "innerHTML"
         )
       )
       assign
       (
-        @ridelist
-        split
-        (
-          @ridestr
-          "-"
-        )
-      )
-      assign
-      (
-        @ride
+        @ReviewDisplayed
         sel
         (
-          @ridelist
-          0
+          @ReviewContinueJson
+          'displayed'
         )
       )
       if
       (
-        equal
+        assign
         (
-          @ride
-          str
+          @ReviewDisplayed
+          sel
           (
-            "113375"
+            @ReviewContinueJson
+            'displayed'
           )
         )
         print
         (
-          str
+          "Review Continue true"
+        )
+        webPageElementClick
+        (
+          @chr
+          "xpath"
+          "//*[@id=\"stil-audit-confirm-btn\"]"
+          100
+          3
+          0
+          1
+        )
+        webPageElementClick
+        (
+          @chr
+          "xpath"
+          "//*[@id=\"bid-rides-list\"]/div[3]//*[@id=\"out-bid-btn\"]"
+          100
+          3
+          0
+          1
+        )
+        sleep
+        (
+          5
+          0
+          0
+        )
+        webPageElementClick
+        (
+          @chr
+          "xpath"
+          "//*[@id=\"stil_audit_modal\"]/div/div[1]"
+          100
+          3
+          0
+          1
+        )
+        tableStream
+        ^ 修改审核状态
+        (
+          streamDbSql
           (
-            "4.  PASS "
+            @db
+            str
+            (
+              "update ride.fleet set unverified = 0 where name = '"
+              @CountryCode
+              @usercode
+              "' and radius is null;"
+            )
+          )
+        )
+        webBrowserPage
+        (
+          @chr
+          @driverpath
+        )
+        sleep
+        (
+          8
+          0
+          0
+        )
+        webPageElementClick
+        (
+          @chr
+          "xpath"
+          "//*[@id=\"bid-rides-list\"]/div[3]//*[@id=\"out-bid-btn\"]"
+          100
+          3
+          0
+          1
+        )
+        sleep
+        (
+          3
+          0
+          0
+        )
+        webPageElementClick
+        (
+          @chr
+          "xpath"
+          "//*[@id=\"bid-rides-list\"]/div[3]//*[@id=\"bid-rides-list-row-0\"]/div[2]/div[1]"
+          100
+          3
+          0
+          1
+        )
+        sleep
+        (
+          2
+          0
+          0
+        )
+        webPageElementClick
+        (
+          @chr
+          "xpath"
+          "//*[@id=\"detail-back\"]"
+          100
+          3
+          0
+          1
+        )
+        sleep
+        (
+          2
+          0
+          0
+        )
+        webPageElementClick
+        (
+          @chr
+          "xpath"
+          "//*[@id=\"orders-booked-act\"]"
+          100
+          3
+          0
+          1
+        )
+        sleep
+        (
+          5
+          0
+          0
+        )
+        assign
+        (
+          @ridestr
+          webElementValue
+          (
+            @chr
+            "xpath"
+            "//*[@id=\"rides-list\"]/div[2]//*[@id=\"rides-list-row-0\"]/div/div[1]/div[1]/span"
+            100
+            3
+            "innerHTML"
+          )
+        )
+        assign
+        (
+          @ridelist
+          split
+          (
+            @ridestr
+            "-"
+          )
+        )
+        assign
+        (
+          @ride
+          sel
+          (
+            @ridelist
+            0
+          )
+        )
+        if
+        (
+          equal
+          (
             @ride
-            "==113375"
+            str
+            (
+              "113375"
+            )
+          )
+          print
+          (
+            str
+            (
+              "4.  PASS "
+              @ride
+              "==113375"
+            )
+          )
+        )
+        else
+        (
+          print
+          (
+            str
+            (
+              "4.  FALSE "
+              @ride
+              "!=113375"
+            )
           )
         )
       )
@@ -1563,12 +1612,7 @@ sequence
       (
         print
         (
-          str
-          (
-            "4.  FALSE "
-            @ride
-            "!=113375"
-          )
+          "Review Continue false"
         )
       )
     )
