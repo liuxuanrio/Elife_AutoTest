@@ -96,7 +96,7 @@ sequence
     streamDbSql
     (
       @db
-      "update ride.dispatch set stat = '134217730',trip_no_x = trip_no where to_fleet_id = '12774' and stat != '134217736' and ride_id in (135908);"
+      "update ride.dispatch set stat = '134217730',trip_no_x = trip_no where to_fleet_id = '12774' and stat != '134217736' and ride_id in (135980);"
     )
   )
   tableStream
@@ -105,7 +105,7 @@ sequence
     streamDbSql
     (
       @db
-      "delete from ride.complaint where ride_id in (select ride_id from ride.dispatch where to_fleet_id = '12774' and ride_id in (135908));"
+      "delete from ride.complaint where ride_id in (select ride_id from ride.dispatch where to_fleet_id = '12774' and ride_id in (135980));"
     )
   )
   webPageElementClick
