@@ -878,7 +878,7 @@ sequence
     (
       str
       (
-        "5.   PASS   "
+        "5.   FALSE   "
         @testtitle
         "!="
         @testtitle1
