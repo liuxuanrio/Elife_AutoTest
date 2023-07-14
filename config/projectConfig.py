@@ -8,7 +8,7 @@ class ProjectConfig:
         :return:
         """
         config = {
-            "driver_app": {"caseName": "driver_app_ui_testcase.xlsx", "runType": "driver_app_employee_login.mqt",
+            "driver_app": {"caseName": "driver_app_ui_testcase.xlsx", "runType": "driver_app_account_add.mqt",
                            "testData": "/data/test_case_file/driver_app/", "testCase": "/test/case/driver_app_case/",
                            "jobName": "Elife_UI_AutoTest", "title": "driver app UI自动化脚本执行完成:"},
             "flt_mgmt": {"caseName": "flt_mgmt_ui_testcase.xlsx", "runType": "flt_mgmt_employee_login.mqt",

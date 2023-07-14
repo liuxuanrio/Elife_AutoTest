@@ -7,7 +7,7 @@ import csv
 from selenium.webdriver.common.by import By
 
 from test.common.gamilCode import selectGmail
-from utils.config import TimeMethod, MYSQL_starter_test
+from utils.config import TimeMethod, MYSQL_starter_test, DataType
 
 
 class WebDriverRun:
@@ -158,7 +158,14 @@ class WebDriverRun:
         if value[5] == "str":  # 判断参数中是否有拼接
             values = self.strValue(value[6])
         else:
-            values = self.strValue(value[5])
+            if len(value[5:]) > 1:
+                values = ""
+                for x in value[5:]:
+                    values += x
+                values = DataType().updateStrMake(values) + "\n"
+            else:
+                values = self.strValue(value[5])
+
 
         # 清除输入框内容
         try:
