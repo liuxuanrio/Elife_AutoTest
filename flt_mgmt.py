@@ -20,7 +20,7 @@ class Test_sign_in:
         caseutc = TimeMethod().intNewTimeUtc()
 
         # 执行用例
-        msg = AutoFile().openFile(caseTitle, caseutc)
+        msg = AutoFile().runMqtFile(caseTitle, caseutc)
         print(msg)
 
         # 保存执行日志
