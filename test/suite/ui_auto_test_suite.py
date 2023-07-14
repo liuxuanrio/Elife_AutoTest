@@ -265,6 +265,6 @@ class OpenFile():
 if __name__ == "__main__":
     pass
     caseutc = TimeMethod().intNewTimeUtc()
-    case = AutoFile().runMqtFile("driver_app_account_add.mqt", caseutc)
+    case = AutoFile().runMqtFile("update_test.mqt", caseutc)
     print(case)
     # case = print(OpenFile().testFileCase())

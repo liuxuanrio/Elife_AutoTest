@@ -470,7 +470,7 @@ sequence
   )
   sleep
   (
-    8
+    10
     0
     0
   )
@@ -486,7 +486,7 @@ sequence
   )
   sleep
   (
-    2
+    3
     0
     0
   )
@@ -499,6 +499,12 @@ sequence
     3
     0
     1
+  )
+  sleep
+  (
+    5
+    0
+    0
   )
   assign
   (
